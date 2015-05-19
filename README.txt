@@ -2,7 +2,9 @@ Tom tu es horrible, je suis decue de travailler avec toi, je sais pas comment je
 Tu comprends rien. Tu mens. J'avoue. C'est vrai ? Tkt.
 Ferme ta gueule, Tom.
 
+0) Calculer solution finale de la map
 1) Faire A*
+
   - classe Grille qui represente l'etat de la grille (1 pere, 2 fils au min, 4 au max)
   - openlist = priority queue && closed list = map
   -
