@@ -12,3 +12,12 @@ Ferme ta gueule, Tom.
 3) Checker variantes du A* et des heuristiques
 3) Faire le parser
 4) Faire une interface graphique
+
+
+
+
+
+mettre tout le tableau en ligne, trier la ligne et compter nbre inversion puis % 2
+regarder la manhattan distance du 0 du debut au 0 final puis % 2
+faut que les 2 soient egaux
+if nb_inversions % 2 != manahtan(0, place_finane_0) % 2
