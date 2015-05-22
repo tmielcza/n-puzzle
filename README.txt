@@ -1,6 +1,7 @@
 Tom tu es horrible, je suis decue de travailler avec toi, je sais pas comment je vais faire pour tenir, tu dessines des bites et regardes des meufs a poil
 Tu comprends rien. Tu mens. J'avoue. C'est vrai ? Tkt.
 Ferme ta gueule, Tom.
+<3 C'est ma bite
 
 0) Calculer solution finale de la map
 1) Faire A*

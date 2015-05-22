@@ -7,14 +7,15 @@
 class AStarSolver {
 
 public:
-  AStarSolver();
-  AStarSolver(AStarSolver const &src);
-  ~AStarSolver();
+	AStarSolver();
+	AStarSolver(AStarSolver const &src);
+	~AStarSolver();
 
-  AStarSolver &operator=(AStarSolver const &rhs);
-  bool solve(char **map, size_t size);
-  char **finalSolution(int size);
-
+	AStarSolver &operator=(AStarSolver const &rhs);
+	bool solve(char **map, size_t size);
+	char **finalSolution(int size);
+	bool isSolvable(char **map, int size);
+	
 };
 
 #endif
