@@ -38,16 +38,14 @@ bool	AStarSolver::solve(char **map, int size) {
 			break;
 		}
 	}
-
 	openlist.push(Node(map, size, 0, manhattanDistance(map, final_map, size), pos0, NULL));
-
 	while (1)
 	{
-		const char around[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		const char offsets[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 		char curr_pos0[2] = openlist.top().pos0;
 		for (int i = 0; i < 4; i++)
 		{
-			char checked[2] = {curr_pos0[0] + around[i][0], curr_pos0[1] + around[i][1]};
+			char checked[2] = {curr_pos0[0] + offsets[i][0], curr_pos0[1] + offsets[i][1]};
 			if (checked[0] > 0 && checked[0] < size && checked[1] > 0 && checked[1] < size)
 			{
 				Node node = openlist.top();
@@ -64,6 +62,8 @@ bool	AStarSolver::solve(char **map, int size) {
 				}
 			}
 		}
+		closelist.push(openlist.top());
+		openlist.pop() // checker que c'est bien celui qu on vient de faire 
 	}
 
 	return true;
