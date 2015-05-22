@@ -1,19 +1,77 @@
+#include <queue>
 #include "AStarSolver.hpp"
 
 AStarSolver::AStarSolver() {}
 
 AStarSolver::~AStarSolver() {}
 
-bool	AStarSolver::solve(char **map, size_t size) {
-	(void)map;
-	(void)size;
+class CompareNode
+{
+public:
+	bool	operator()(const Node& lhs, const Node& rhs)
+	{
+		return (Node.heuristic <= Node.heuristic ? true : false);
+	}
+};
+
+size_t	hash()
+{
+
+}
+
+bool
+
+bool	AStarSolver::solve(char **map, int size) {
+	int 										cost;
+	priority_queue<Node, vector<Node>, CompareNode>		openlist;
+	unordered_set<Node, hash, pred>			closelist;
+	char **final_map;
+	final_map = finalSolution(size);
+	char pos0[2];
+
+	for (int i = 0; i < size * size; i++)
+	{
+		if (map[i / 4][i % 4] == 0)
+		{
+			pos0[0] = i / 4;
+			pos0[1] = i % 4;
+			break;
+		}
+	}
+
+	openlist.push(Node(map, size, 0, manhattanDistance(map, final_map, size), pos0, NULL));
+
+	while (1)
+	{
+		const char around[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		char curr_pos0[2] = openlist.top().pos0;
+		for (int i = 0; i < 4; i++)
+		{
+			char checked[2] = {curr_pos0[0] + around[i][0], curr_pos0[1] + around[i][1]};
+			if (checked[0] > 0 && checked[0] < size && checked[1] > 0 && checked[1] < size)
+			{
+				Node node = openlist.top();
+				node.map[curr_pos0[0]][curr_pos0[1]] = node.map[checked[0]][checked[1]];
+				node.map[checked[0]][checked[1]] = 0;
+				if (closelist.find(Node) == closelist.end())
+				{
+					node.cost += 1;
+					node.heuristic = node.cost + manhattanDistance(node.map, final_map);
+					nod.pos0[0] = checked[0];
+					nod.pos0[1] = checked[1];
+					node.parent = openlist.top();
+					openlist.push(node);
+				}
+			}
+		}
+	}
+
 	return true;
 }
 
 int	AStarSolver::manhattanDistance(char **map, char **map_final, int size) {
-	int total_size = size * size;
 	char map_pos[16][2];
-	int pos = 0;
+	int pos;
 	int x_final;
 	int y_final;
 	int cumul = 0;
