@@ -10,10 +10,38 @@ bool	AStarSolver::solve(char **map, size_t size) {
 	return true;
 }
 
-#include <cstdio>
+int	AStarSolver::manhattanDistance(char **map, char **map_final, int size) {
+	int total_size = size * size;
+	char map_pos[16][2];
+	int pos = 0;
+	int x_final;
+	int y_final;
+	int cumul = 0;
 
+	for (int x = 0; x < size; x++)
+	{
+		for (int y = 0; y < size; y++)
+		{
+			pos = map_final[y][x];
+			map_pos[pos][0] = y;
+			map_pos[pos][1] = x;
+		}
+	}
+	for (int x = 0; x < size; x++)
+	{
+		for (int y = 0; y < size; y++)
+		{
+			pos = map[y][x];
+			y_final = map_pos[pos][0];
+			x_final = map_pos[pos][1];
+			cumul += abs(x_final - x);
+			cumul += abs(y_final - y);
+		}
+	}
+	return (cumul);
+}
 
-char	**getSnailForm(char **map, int size) {
+char	**AStarSolver::getSnailForm(char **map, int size) {
 	char **newMap = new char*[size * size];
 	int total_size = size * size;
 	int x = 0;
@@ -81,4 +109,3 @@ char **AStarSolver::finalSolution(int size) {
 	}
 	return (newMap);
 }
-
