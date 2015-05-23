@@ -14,7 +14,7 @@ public:
 	~AStarSolver();
 
 	AStarSolver &operator=(AStarSolver const &rhs);
-	bool solve(char **map, size_t size);
+	bool solve(char **map, int size);
 	char **finalSolution(int size);
 	bool isSolvable(char **map, int size);
 	char	**getSnailForm(char **map, int size);

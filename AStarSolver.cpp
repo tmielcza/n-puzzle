@@ -1,30 +1,45 @@
 #include <queue>
+#include <unordered_set>
 #include "AStarSolver.hpp"
+#include "Node.hpp"
 
 AStarSolver::AStarSolver() {}
 
 AStarSolver::~AStarSolver() {}
 
-class CompareNode
+size_t	hash_node(const Node* node)
 {
-public:
-	bool	operator()(const Node& lhs, const Node& rhs)
+	size_t	hash = 0;
+	size_t	i = 0;
+
+	for (size_t x = 0; x < node->size; x++)
 	{
-		return (Node.heuristic <= Node.heuristic ? true : false);
+		for (size_t y = 0; y < node->size; y++, i++)
+		{
+			hash ^= node->map[y][x] & (0xF << ((i << 2) & 31));
+		}
 	}
-};
-
-size_t	hash()
-{
-
+	return (hash);
 }
 
-bool
+bool	eq_node(const Node* a, const Node* b)
+{
+	return (*a == *b);
+}
 
-bool	AStarSolver::solve(char **map, int size) {
-	int 										cost;
-	priority_queue<Node, vector<Node>, CompareNode>		openlist;
-	unordered_set<Node, hash, pred>			closelist;
+bool	less_node(const Node* a, const Node* b)
+{
+	return (*a < *b);
+}
+
+typedef std::unordered_set<Node*, decltype(&hash_node), decltype(&eq_node)>	nodes_set;
+typedef std::priority_queue<Node*, std::vector<Node*>, decltype(&less_node)> node_queue;
+
+// If current_map == final_map -> build path
+bool	AStarSolver::solve(char **map, const int size)
+{
+	node_queue openlist(less_node);
+	nodes_set closelist(100, hash_node, eq_node);
 	char **final_map;
 	final_map = finalSolution(size);
 	char pos0[2];
@@ -38,32 +53,41 @@ bool	AStarSolver::solve(char **map, int size) {
 			break;
 		}
 	}
-	openlist.push(Node(map, size, 0, manhattanDistance(map, final_map, size), pos0, NULL));
+	openlist.push(new Node(map, size, 0, manhattanDistance(map, final_map, size), pos0, NULL));
 	while (1)
 	{
 		const char offsets[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-		char curr_pos0[2] = openlist.top().pos0;
+		char curr_pos0[2];
+		curr_pos0[0] = openlist.top()->pos0[0];
+		curr_pos0[1] = openlist.top()->pos0[1];
 		for (int i = 0; i < 4; i++)
 		{
-			char checked[2] = {curr_pos0[0] + offsets[i][0], curr_pos0[1] + offsets[i][1]};
+			char checked[2];
+			checked[0] = curr_pos0[0] + offsets[i][0];
+			checked[1] = curr_pos0[1] + offsets[i][1];
 			if (checked[0] > 0 && checked[0] < size && checked[1] > 0 && checked[1] < size)
 			{
-				Node node = openlist.top();
-				node.map[curr_pos0[0]][curr_pos0[1]] = node.map[checked[0]][checked[1]];
-				node.map[checked[0]][checked[1]] = 0;
-				if (closelist.find(Node) == closelist.end())
+				Node* node = new Node(*openlist.top());
+				node->map[curr_pos0[0]][curr_pos0[1]] = node->map[checked[0]][checked[1]];
+				node->map[checked[0]][checked[1]] = 0;
+				if (closelist.find(node) == closelist.end())
 				{
-					node.cost += 1;
-					node.heuristic = node.cost + manhattanDistance(node.map, final_map);
-					nod.pos0[0] = checked[0];
-					nod.pos0[1] = checked[1];
-					node.parent = openlist.top();
+					node->cost += 1;
+					node->heuristic = node->cost + manhattanDistance(node->map, final_map, size);
+					node->pos0[0] = checked[0];
+					node->pos0[1] = checked[1];
+					node->parent = openlist.top();
 					openlist.push(node);
+				}
+				else
+				{
+					delete node;
 				}
 			}
 		}
-		closelist.push(openlist.top());
-		openlist.pop() // checker que c'est bien celui qu on vient de faire 
+		Node* tmp = openlist.top();
+		openlist.pop();
+		closelist.insert(tmp);
 	}
 
 	return true;
