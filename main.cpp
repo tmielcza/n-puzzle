@@ -3,20 +3,30 @@
 int main(int ac, char **av)
 {
 	// char map[4][4] = {
-	// 	{15, 12, 14, 5},
-	// 	{7, 10, 1, 0},
-	// 	{4, 6, 8, 13},
-	// 	{2, 11, 9, 3}
+	// 	{4, 3, 2, 5},
+	// 	{12, 1, 15, 14},
+	// 	{10, 11, 13, 6},
+	// 	{0, 9, 8, 7}
 	// };
+
+	// cui la du forum
+	// char map[4][4] = {
+	// {4, 15, 1, 2},
+	// {0, 14, 8, 13},
+	// {10, 12, 3, 9},
+	// {11, 5, 7, 6}
+	// };
+
+	// Hardcore mode = 80 coups...
 	char map[4][4] = {
-	{1, 2, 3, 4},
-	{12, 13, 14, 5},
-	{11, 0, 15, 6},
-	{10, 9, 8, 7}
+		{15, 14, 13, 12},
+		{10, 11, 8, 9},
+		{2, 6, 5, 1},
+		{3, 7, 4, 0}
 	};
+	
 	char **map2 = new char *[4];
-	char **map_final;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < sizeof(map[0]) / sizeof(map[0][0]); i++)
 	{
 		map2[i] = &map[i][0];
 	}
@@ -26,10 +36,11 @@ int main(int ac, char **av)
 	{
 		AStarSolver a;
 //		a.finalSolution(atoi(av[1]));
-		if (a.isSolvable(map2, 4))
+		if (a.isSolvable(map2, sizeof(map[0])))
 			std::cout << "Solvable" << std::endl;
-		map_final = a.finalSolution(4);
-		std::cout << a.manhattanDistance(map2, map_final, 4) << std::endl;
+		else
+			std::cout << "Not Solvable" << std::endl;			
+		a.solve(map2, sizeof(map[0]));
 	}
 	(void)av;
 	return (0);

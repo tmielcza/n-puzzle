@@ -43,6 +43,7 @@ struct Node
 		{
 			this->map[i] = new char[this->size];
 		}
+		this->cost = src.cost;
 		*this = src;
 	}
 
@@ -53,11 +54,18 @@ struct Node
 };
 
 bool	operator==(const Node& lhs, const Node& rhs) {
-		if (lhs.size == rhs.size)
-			return (true);
-		else
-			return (false);
+	for (size_t y = 0; y < lhs.size; y++)
+	{
+		for (size_t x = 0; x < lhs.size; x++)
+		{
+			if (lhs.map[y][x] != rhs.map[y][x])
+			{
+				return (false);
+			}
+		}
 	}
+	return (true);
+}
 
 bool	operator<(const Node& lhs, const Node& rhs) {
 		if (lhs.size < rhs.size)

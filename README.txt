@@ -5,12 +5,12 @@ Ferme ta gueule, Tom.
 
 0) Calculer solution finale de la map
 1) Faire A*
-
   - // classe Grille qui represente l'etat de la grille (1 pere, 2 fils au min, 4 au max)
   - // openlist = priority queue && closed list = map
-  - Verifier si ca fonctionne...
+  - // Verifier si ca fonctionne...
 2) // Faire Manhattan
    (+ autre(s) heuristique(s))
 3) Checker variantes du A* et des heuristiques
-3) Faire le parser
-4) Faire une interface graphique
+4) Faire le parser
+5) Bidirectionnel
+6) Faire une interface graphique

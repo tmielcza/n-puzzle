@@ -1,5 +1,6 @@
 #include <queue>
 #include <unordered_set>
+#include <list>
 #include "AStarSolver.hpp"
 #include "Node.hpp"
 
@@ -29,27 +30,57 @@ bool	eq_node(const Node* a, const Node* b)
 
 bool	less_node(const Node* a, const Node* b)
 {
-	return (*a < *b);
+	return (a->heuristic > b->heuristic);
 }
+
+void				dumpNode(Node* node)
+{
+	for (int y = 0; y < node->size; y++)
+	{
+		for (int x = 0; x < node->size; x++)
+		{
+			std::cout << (int)node->map[y][x] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+std::list<Node*>	buildPath(Node* last)
+{
+	std::list<Node*>	lst;
+
+	while (last != NULL)
+	{
+		dumpNode(last);
+		lst.push_front(last);
+		last = last->parent;
+	}
+	std::cout << "Count = " << lst.size() << std::endl;
+	return (lst);
+}
+
+#include <unistd.h>
 
 typedef std::unordered_set<Node*, decltype(&hash_node), decltype(&eq_node)>	nodes_set;
 typedef std::priority_queue<Node*, std::vector<Node*>, decltype(&less_node)> node_queue;
 
-// If current_map == final_map -> build path
 bool	AStarSolver::solve(char **map, const int size)
 {
 	node_queue openlist(less_node);
 	nodes_set closelist(100, hash_node, eq_node);
 	char **final_map;
 	final_map = finalSolution(size);
+	char testouille[2] = {1, 2};
+	Node	final_node(final_map, size, 0, 0, testouille, NULL);
 	char pos0[2];
 
 	for (int i = 0; i < size * size; i++)
 	{
-		if (map[i / 4][i % 4] == 0)
+		if (map[i / size][i % size] == 0)
 		{
-			pos0[0] = i / 4;
-			pos0[1] = i % 4;
+			pos0[0] = i / size;
+			pos0[1] = i % size;
 			break;
 		}
 	}
@@ -57,17 +88,25 @@ bool	AStarSolver::solve(char **map, const int size)
 	while (1)
 	{
 		const char offsets[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		if (*openlist.top() == final_node)
+		{
+			buildPath(openlist.top());
+			return true;
+		}
 		char curr_pos0[2];
 		curr_pos0[0] = openlist.top()->pos0[0];
 		curr_pos0[1] = openlist.top()->pos0[1];
+		Node* topNode = openlist.top();
+		openlist.pop();
+		std::cout << topNode->heuristic << " - " << openlist.size() << std::endl;
 		for (int i = 0; i < 4; i++)
 		{
 			char checked[2];
 			checked[0] = curr_pos0[0] + offsets[i][0];
 			checked[1] = curr_pos0[1] + offsets[i][1];
-			if (checked[0] > 0 && checked[0] < size && checked[1] > 0 && checked[1] < size)
+			if (checked[0] >= 0 && checked[0] < size && checked[1] >= 0 && checked[1] < size)
 			{
-				Node* node = new Node(*openlist.top());
+				Node* node = new Node(*topNode);
 				node->map[curr_pos0[0]][curr_pos0[1]] = node->map[checked[0]][checked[1]];
 				node->map[checked[0]][checked[1]] = 0;
 				if (closelist.find(node) == closelist.end())
@@ -76,7 +115,7 @@ bool	AStarSolver::solve(char **map, const int size)
 					node->heuristic = node->cost + manhattanDistance(node->map, final_map, size);
 					node->pos0[0] = checked[0];
 					node->pos0[1] = checked[1];
-					node->parent = openlist.top();
+					node->parent = topNode;
 					openlist.push(node);
 				}
 				else
@@ -85,9 +124,7 @@ bool	AStarSolver::solve(char **map, const int size)
 				}
 			}
 		}
-		Node* tmp = openlist.top();
-		openlist.pop();
-		closelist.insert(tmp);
+		closelist.insert(topNode);
 	}
 
 	return true;
@@ -172,7 +209,6 @@ bool	AStarSolver::isSolvable(char **map, int size) {
 	}
 	return (count % 2 == 0);
 }
-
 
 char **AStarSolver::finalSolution(int size) {
 	char **newMap = new char*[size];
