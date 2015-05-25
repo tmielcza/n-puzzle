@@ -98,7 +98,7 @@ bool	AStarSolver::solve(char **map, const int size)
 		curr_pos0[1] = openlist.top()->pos0[1];
 		Node* topNode = openlist.top();
 		openlist.pop();
-		std::cout << topNode->heuristic << " - " << openlist.size() << std::endl;
+		std::cout << topNode->cost << " - " << topNode->heuristic << " - " << openlist.size() << std::endl;
 		for (int i = 0; i < 4; i++)
 		{
 			char checked[2];

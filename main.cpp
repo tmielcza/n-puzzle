@@ -17,12 +17,12 @@ int main(int ac, char **av)
 	// {11, 5, 7, 6}
 	// };
 
-	// Hardcore mode = 80 coups...
+	// Hardcore mode ...
 	char map[4][4] = {
-		{15, 14, 13, 12},
-		{10, 11, 8, 9},
-		{2, 6, 5, 1},
-		{3, 7, 4, 0}
+		{0, 15, 14, 13},
+		{5, 4, 3, 12},
+		{6, 2, 1, 11},
+		{7, 8, 9, 10}
 	};
 	
 	char **map2 = new char *[4];
@@ -37,10 +37,12 @@ int main(int ac, char **av)
 		AStarSolver a;
 //		a.finalSolution(atoi(av[1]));
 		if (a.isSolvable(map2, sizeof(map[0])))
+		{
 			std::cout << "Solvable" << std::endl;
+			a.solve(map2, sizeof(map[0]));
+		}
 		else
-			std::cout << "Not Solvable" << std::endl;			
-		a.solve(map2, sizeof(map[0]));
+			std::cout << "Not Solvable" << std::endl;
 	}
 	(void)av;
 	return (0);
