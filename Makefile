@@ -1,5 +1,8 @@
 NAME = npuzzle
-SRC = main.cpp AStarSolver.cpp NodePool.cpp
+SRC=main.cpp \
+	AStarSolver.cpp \
+	NodePool.cpp \
+	Node.cpp
 OBJ = $(SRC:.cpp=.o)
 FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3
 

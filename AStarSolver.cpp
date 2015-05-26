@@ -2,7 +2,7 @@
 #include <unordered_set>
 #include <list>
 #include "AStarSolver.hpp"
-//#include "Node.hpp"
+#include "Node.hpp"
 #include "NodePool.hpp"
 
 AStarSolver::AStarSolver() {}
@@ -26,6 +26,7 @@ size_t	hash_node(const Node* node)
 
 bool	eq_node(const Node* a, const Node* b)
 {
+//	return (hash_node(a) == hash_node(b));
 	return (*a == *b);
 }
 
@@ -99,7 +100,6 @@ bool	AStarSolver::solve(char **map, const int size)
 		curr_pos0[0] = topNode->pos0[0];
 		curr_pos0[1] = topNode->pos0[1];
 		openlist.pop();
-//		std::cout << topNode->cost << " - " << topNode->heuristic << " - " << openlist.size() << std::endl;
 		for (int i = 0; i < 4; i++)
 		{
 			unsigned short checked[2];
@@ -107,7 +107,6 @@ bool	AStarSolver::solve(char **map, const int size)
 			checked[1] = curr_pos0[1] + offsets[i][1];
 			if (checked[0] >= 0 && checked[0] < size && checked[1] >= 0 && checked[1] < size)
 			{
-//				Node* node = new Node(*topNode);
 				Node* node = pool.newNode();
 				*node = *topNode;
 				node->map[curr_pos0[0]][curr_pos0[1]] = node->map[checked[0]][checked[1]];
@@ -124,7 +123,6 @@ bool	AStarSolver::solve(char **map, const int size)
 				else
 				{
 					pool.delNode(node);
-//					delete node;
 				}
 			}
 		}
