@@ -16,6 +16,7 @@ public:
   bool parsing(std::string line);
   char **get_map(char *map);
   int getSize(void);
+  char *convert(char **map);
 
 private:
   int size;

@@ -39,11 +39,11 @@ void				dumpNode(Node* node)
 	{
 		for (size_t x = 0; x < node->size; x++)
 		{
-			std::cout << (int)node->map[y][x] << " ";
+//			std::cout << (int)node->map[y][x] << " ";
 		}
-		std::cout << std::endl;
+//		std::cout << std::endl;
 	}
-	std::cout << std::endl;
+//	std::cout << std::endl;
 }
 
 std::list<Node*>	buildPath(Node* last)
@@ -199,17 +199,14 @@ bool	AStarSolver::isSolvable(char **map, int size) {
 	int total_size = size * size;
 	int count = 0;
 
-	std::cout << "size : " << size << std::endl;
 	for (int i = 0; i < total_size - 1; i++)
 	{
 		for (int j = i + 1; j < total_size; j++)
 		{
 			if (*newMap[i] && *newMap[j] && *newMap[i] > *newMap[j])
 				count++;
-			std::cout << "count" << count << std::endl;
 		}
 	}
-	std::cout << count % 2 << std::endl;
 	return (count % 2 == 0);
 }
 
