@@ -1,7 +1,7 @@
 NAME = npuzzle
 SRC = main.cpp AStarSolver.cpp
 OBJ = $(SRC:.cpp=.o)
-FLAGS = -Wall -Wextra -std=c++11
+FLAGS = -Wall -Wextra -Werror -std=c++11
 
 all: $(NAME)
 

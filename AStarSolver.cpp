@@ -8,10 +8,10 @@ AStarSolver::AStarSolver() {}
 
 AStarSolver::~AStarSolver() {}
 
-size_t	hash_node(const Node* node)
+int	hash_node(const Node* node)
 {
-	size_t	hash = 0;
-	size_t	i = 0;
+	int	hash = 0;
+	int	i = 0;
 
 	for (size_t x = 0; x < node->size; x++)
 	{
@@ -35,9 +35,9 @@ bool	less_node(const Node* a, const Node* b)
 
 void				dumpNode(Node* node)
 {
-	for (int y = 0; y < node->size; y++)
+	for (size_t y = 0; y < node->size; y++)
 	{
-		for (int x = 0; x < node->size; x++)
+		for (size_t x = 0; x < node->size; x++)
 		{
 			std::cout << (int)node->map[y][x] << " ";
 		}
@@ -93,7 +93,7 @@ bool	AStarSolver::solve(char **map, const int size)
 			buildPath(openlist.top());
 			return true;
 		}
-		char curr_pos0[2];
+		unsigned short curr_pos0[2];
 		curr_pos0[0] = openlist.top()->pos0[0];
 		curr_pos0[1] = openlist.top()->pos0[1];
 		Node* topNode = openlist.top();
@@ -101,7 +101,7 @@ bool	AStarSolver::solve(char **map, const int size)
 		std::cout << topNode->heuristic << " - " << openlist.size() << std::endl;
 		for (int i = 0; i < 4; i++)
 		{
-			char checked[2];
+			unsigned short checked[2];
 			checked[0] = curr_pos0[0] + offsets[i][0];
 			checked[1] = curr_pos0[1] + offsets[i][1];
 			if (checked[0] >= 0 && checked[0] < size && checked[1] >= 0 && checked[1] < size)

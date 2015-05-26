@@ -26,7 +26,7 @@ struct Node
 		: size(size),
 		  cost(cost),
 		  heuristic(heuristic),
-		  parent(parent),
+			parent(parent),
 		  pos0 {pos0[0], pos0[1]}
 		{
 			this->map = new char*[this->size];
