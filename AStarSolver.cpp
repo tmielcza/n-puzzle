@@ -17,7 +17,7 @@ size_t	hash_node(const Node* node)
 	{
 		for (size_t y = 0; y < node->size; y++, i++)
 		{
-			hash ^= node->map[y][x] & (0xF << ((i << 2) & 31));
+			hash ^= (node->map[y][x] & 0xF) << (i & 7 << 2);
 		}
 	}
 	return (hash);
