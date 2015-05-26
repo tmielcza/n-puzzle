@@ -2,7 +2,8 @@
 #include <unordered_set>
 #include <list>
 #include "AStarSolver.hpp"
-#include "Node.hpp"
+//#include "Node.hpp"
+#include "NodePool.hpp"
 
 AStarSolver::AStarSolver() {}
 
@@ -13,11 +14,11 @@ size_t	hash_node(const Node* node)
 	size_t	hash = 0;
 	size_t	i = 0;
 
-	for (size_t x = 0; x < node->size; x++)
+	for (size_t y = 0; y < node->size; y++)
 	{
-		for (size_t y = 0; y < node->size; y++, i++)
+		for (size_t x = 0; x < node->size; x++, i++)
 		{
-			hash ^= (node->map[y][x] & 0xF) << (i & 7 << 2);
+			hash ^= ((size_t)(node->map[y][x] & 0xF) << ((i & 7) << 2));
 		}
 	}
 	return (hash);
@@ -35,9 +36,9 @@ bool	less_node(const Node* a, const Node* b)
 
 void				dumpNode(Node* node)
 {
-	for (int y = 0; y < node->size; y++)
+	for (size_t y = 0; y < node->size; y++)
 	{
-		for (int x = 0; x < node->size; x++)
+		for (size_t x = 0; x < node->size; x++)
 		{
 			std::cout << (int)node->map[y][x] << " ";
 		}
@@ -67,13 +68,15 @@ typedef std::priority_queue<Node*, std::vector<Node*>, decltype(&less_node)> nod
 
 bool	AStarSolver::solve(char **map, const int size)
 {
-	node_queue openlist(less_node);
-	nodes_set closelist(100, hash_node, eq_node);
-	char **final_map;
-	final_map = finalSolution(size);
-	char testouille[2] = {1, 2};
-	Node	final_node(final_map, size, 0, 0, testouille, NULL);
-	char pos0[2];
+	node_queue	openlist(less_node);
+	nodes_set	closelist(100, hash_node, eq_node);
+	char		**final_map = finalSolution(size);;
+	char		testouille[2] = {1, 2};
+	Node		final_node(final_map, size, 0, 0, testouille, NULL);;
+	char		pos0[2];
+	const char	offsets[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+	unsigned short curr_pos0[2];
+	NodePool	pool(size);
 
 	for (int i = 0; i < size * size; i++)
 	{
@@ -87,26 +90,26 @@ bool	AStarSolver::solve(char **map, const int size)
 	openlist.push(new Node(map, size, 0, manhattanDistance(map, final_map, size), pos0, NULL));
 	while (1)
 	{
-		const char offsets[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 		if (*openlist.top() == final_node)
 		{
 			buildPath(openlist.top());
 			return true;
 		}
-		char curr_pos0[2];
-		curr_pos0[0] = openlist.top()->pos0[0];
-		curr_pos0[1] = openlist.top()->pos0[1];
 		Node* topNode = openlist.top();
+		curr_pos0[0] = topNode->pos0[0];
+		curr_pos0[1] = topNode->pos0[1];
 		openlist.pop();
-		std::cout << topNode->cost << " - " << topNode->heuristic << " - " << openlist.size() << std::endl;
+//		std::cout << topNode->cost << " - " << topNode->heuristic << " - " << openlist.size() << std::endl;
 		for (int i = 0; i < 4; i++)
 		{
-			char checked[2];
+			unsigned short checked[2];
 			checked[0] = curr_pos0[0] + offsets[i][0];
 			checked[1] = curr_pos0[1] + offsets[i][1];
 			if (checked[0] >= 0 && checked[0] < size && checked[1] >= 0 && checked[1] < size)
 			{
-				Node* node = new Node(*topNode);
+//				Node* node = new Node(*topNode);
+				Node* node = pool.newNode();
+				*node = *topNode;
 				node->map[curr_pos0[0]][curr_pos0[1]] = node->map[checked[0]][checked[1]];
 				node->map[checked[0]][checked[1]] = 0;
 				if (closelist.find(node) == closelist.end())
@@ -120,7 +123,8 @@ bool	AStarSolver::solve(char **map, const int size)
 				}
 				else
 				{
-					delete node;
+					pool.delNode(node);
+//					delete node;
 				}
 			}
 		}
@@ -226,4 +230,39 @@ char **AStarSolver::finalSolution(int size) {
 		*(snailMap[i]) = i + 1;
 	}
 	return (newMap);
+}
+
+#include <cstdlib>
+
+char	**AStarSolver::genMap(size_t size, size_t swaps)
+{
+	char	**map = finalSolution(size);
+	char	offsets[4][2] = {
+		{1, 0}, {0, 1}, {-1, 0}, {0, -1}
+	};
+	int		count = 0;
+	char	pos0[2] = {(char)(size / 2), (char)(size / 2 - (size % 2 == 0 ? 1 : 0))};
+
+	if (swaps == 0)
+	{
+		swaps = rand() % 1400;
+	}
+	while (swaps > 0)
+	{
+		int		off = rand() % 4;
+		char	swapPos[2] = {(char)(pos0[0] + offsets[off][0]), char(pos0[1] + offsets[off][1])};
+		if (swapPos[0] >= 0 && swapPos[0] < (int)size && swapPos[1] >= 0 && swapPos[1] < (int)size)
+		{
+			map[(int)pos0[0]][(int)pos0[1]] = map[(int)swapPos[0]][(int)swapPos[1]];
+			map[(int)swapPos[0]][(int)swapPos[1]] = 0;
+			pos0[0] = swapPos[0];
+			pos0[1] = swapPos[1];
+		}
+		count = (count + 1) & 0xF;
+		swaps--;
+	}
+
+	dumpNode(new Node(map, size, 0, 0, pos0, NULL));
+
+	return (map);
 }

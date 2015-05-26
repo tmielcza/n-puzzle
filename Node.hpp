@@ -3,6 +3,8 @@
 
 # include <cstddef>
 
+# include <iostream>
+
 struct Node
 {
 	char	**map;
@@ -22,6 +24,8 @@ struct Node
 		}
 	}
 
+	Node(void) {}
+
 	Node(const char * const * map, int size, int cost, int heuristic, char pos0[2], Node *parent)
 		: size(size),
 		  cost(cost),
@@ -37,20 +41,23 @@ struct Node
 			this->setMap(map);
 		}
 
-	Node(const Node& src) : size(src.size) {
+	Node(const Node& src) {
 		this->map = new char*[this->size];
 		for (size_t i = 0; i < this->size; i++)
 		{
 			this->map[i] = new char[this->size];
 		}
-		this->cost = src.cost;
 		*this = src;
 	}
 
 	Node&	operator=(const Node& rhs) {
 		setMap(rhs.map);
+		this->size = rhs.size;
+		this->cost = rhs.cost;
 		return (*this);
 	}
+
+	
 };
 
 bool	operator==(const Node& lhs, const Node& rhs) {

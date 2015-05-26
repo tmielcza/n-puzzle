@@ -24,7 +24,7 @@ int main(int ac, char **av)
 		{6, 2, 1, 11},
 		{7, 8, 9, 10}
 	};
-	
+
 	char **map2 = new char *[4];
 	for (size_t i = 0; i < sizeof(map[0]) / sizeof(map[0][0]); i++)
 	{
@@ -39,7 +39,8 @@ int main(int ac, char **av)
 		if (a.isSolvable(map2, sizeof(map[0])))
 		{
 			std::cout << "Solvable" << std::endl;
-			a.solve(map2, sizeof(map[0]));
+			a.solve(a.genMap(4, 300), 4);
+//			a.solve(map2, sizeof(map[0]));
 		}
 		else
 			std::cout << "Not Solvable" << std::endl;

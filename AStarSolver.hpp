@@ -14,11 +14,12 @@ public:
 	~AStarSolver();
 
 	AStarSolver &operator=(AStarSolver const &rhs);
-	bool solve(char **map, int size);
-	char **finalSolution(int size);
-	bool isSolvable(char **map, int size);
+	bool	solve(char **map, int size);
+	char	**finalSolution(int size);
+	bool	isSolvable(char **map, int size);
 	char	**getSnailForm(char **map, int size);
-	int	manhattanDistance(char **map, char **map2, int size);
+	int		manhattanDistance(char **map, char **map2, int size);
+	char	**genMap(size_t size, size_t swaps);
 
 };
 
