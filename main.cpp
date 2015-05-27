@@ -25,6 +25,14 @@ int main(int ac, char **av)
 	// 	{7, 8, 9, 10}
 	// };
 
+	/*
+	  39 coups
+	11 12 3 5
+	10 9 13 1
+	2 4 0 14
+	8 7 15 6
+	*/
+
 	char **map2 = new char *[4];
 	for (size_t i = 0; i < sizeof(map[0]) / sizeof(map[0][0]); i++)
 	{

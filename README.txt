@@ -9,8 +9,9 @@ Ferme ta gueule, Tom.
   - // openlist = priority queue && closed list = map
   - // Verifier si ca fonctionne...
 2) // Faire Manhattan
-   (+ autre(s) heuristique(s))
-3) Checker variantes du A* et des heuristiques
-4) Faire le parser
-5) Bidirectionnel
-6) Faire une interface graphique
+   (+ 2/3 autres heuristiques)
+3) Faire le parser (en cours...)
+4) Calculer les stats
+5) Bidirectionnel (bonus)
+6) Faire une interface graphique (bonus)
+7) Avec quelques options, une ou deux heuristiques en plus, et la rapidite du bordel, on est large niveau bonus.
