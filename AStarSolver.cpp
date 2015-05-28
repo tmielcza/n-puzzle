@@ -12,6 +12,7 @@ AStarSolver::~AStarSolver() {}
 
 size_t	hash_node(const Node* node)
 {
+	/*
 	size_t	hash = 0;
 	size_t	i = 0;
 
@@ -22,7 +23,8 @@ size_t	hash_node(const Node* node)
 			hash ^= ((size_t)(node->map[y][x] & 0xF) << ((i & 7) << 2));
 		}
 	}
-	return (hash);
+	*/
+	return (node->_hash);
 }
 
 bool	eq_node(const Node* a, const Node* b)
@@ -33,6 +35,8 @@ bool	eq_node(const Node* a, const Node* b)
 
 bool	less_node(const Node* a, const Node* b)
 {
+	if (a->distance == b->distance)
+		return (a->cost < b->cost);
 	return (a->distance > b->distance);
 }
 
@@ -75,6 +79,7 @@ std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& m
 			node->distance = node->cost + node->heuristic;
 			node->pos0 = checked;
 			node->parent = topNode;
+			node->hash();
 			tmp.push_back(node);
 		}
 	}

@@ -21,6 +21,7 @@ struct Node
 	Square	find0(const char * const * map, size_t size);
 	void	dump(void);
 	char*	square(const Square& s) const;
+	void	hash(void);
 
 	Node&	operator=(const Node& rhs);
 
@@ -31,6 +32,7 @@ struct Node
 	int		distance;
 	Node	*parent;
 	Square	pos0;
+	size_t	_hash;
 };
 
 Node::Square	operator+(Node::Square lhs, const Node::Square& rhs);

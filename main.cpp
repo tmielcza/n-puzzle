@@ -47,8 +47,8 @@ int main(int ac, char **av)
 		if (a.isSolvable(map2, sizeof(map[0])))
 		{
 			std::cout << "Solvable" << std::endl;
-			a.solve(a.genMap(4, 300), 4);
-//			a.solve(map2, sizeof(map[0]));
+//			a.solve(a.genMap(4, 300), 4);
+			a.solve(map2, sizeof(map[0]));
 		}
 		else
 			std::cout << "Not Solvable" << std::endl;

@@ -20,7 +20,7 @@ int		Manhattan::distance(char **map) {
 	int x_final;
 	int y_final;
 	int cumul = 0;
-	
+
 	for (int x = 0; x < this->size; x++)
 	{
 		for (int y = 0; y < this->size; y++)

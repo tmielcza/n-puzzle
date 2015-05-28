@@ -26,6 +26,7 @@ Node::Node(const char * const * map, int size)
 	: Node(size)
 {
 	this->setMap(map);
+	this->hash();
 	Node::Square sq = find0(map, size);
 	this->pos0.x = sq.x;
 	this->pos0.y = sq.y;
@@ -49,6 +50,7 @@ Node::Node(const char * const * map, int size, int cost, int heuristic, char pos
 		this->map[i] = new char[this->size];
 	}
 	this->setMap(map);
+	this->hash();
 }
 
 Node::Node(const Node& src) : Node(src.size) {
@@ -93,6 +95,7 @@ char*	Node::square(const Square& s) const {
 Node&	Node::operator=(const Node& rhs) {
 	this->size = rhs.size;
 	setMap(rhs.map);
+	this->_hash = rhs._hash;
 	this->pos0.x = rhs.pos0.x;
 	this->pos0.y = rhs.pos0.y;
 	this->cost = rhs.cost;
@@ -100,6 +103,10 @@ Node&	Node::operator=(const Node& rhs) {
 }
 
 bool	operator==(const Node& lhs, const Node& rhs) {
+	if (lhs._hash != rhs._hash)
+		return (false);
+	if (lhs.heuristic != rhs.heuristic)
+		return (false);
 	for (size_t i = 0; i < lhs.size; i++)
 	{
 		if (memcmp(lhs.map[i], rhs.map[i], lhs.size))
@@ -117,4 +124,19 @@ bool	operator<(const Node& lhs, const Node& rhs) {
 Node::Square	operator+(Node::Square lhs, const Node::Square& rhs) {
 	Node::Square tmp(lhs.x + rhs.x, lhs.y + rhs.y);
 	return (tmp);
+}
+
+void	Node::hash(void)
+{
+	size_t	hash = 0;
+	size_t	i = 0;
+
+	for (size_t y = 0; y < this->size; y++)
+	{
+		for (size_t x = 0; x < this->size; x++, i++)
+		{
+			hash ^= ((size_t)(this->map[y][x] & 0xF) << ((i & 7) << 2));
+		}
+	}
+	this->_hash = hash;
 }
