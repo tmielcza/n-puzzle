@@ -6,47 +6,41 @@
 #include "NodePool.hpp"
 #include "Manhattan.hpp"
 
-AStarSolver::AStarSolver() {}
-
 AStarSolver::~AStarSolver() {}
 
-size_t	hash_node(const Node* node)
-{
+size_t	AStarSolver::hash_node(const Node* node) {
 	return (node->_hash);
 }
 
-bool	eq_node(const Node* a, const Node* b)
-{
+bool	AStarSolver::eq_node(const Node* a, const Node* b) {
 	return (*a == *b);
 }
 
-bool	less_node(const Node* a, const Node* b)
-{
+bool	AStarSolver::less_node(const Node* a, const Node* b) {
 	if (a->distance == b->distance)
 		return (a->cost < b->cost);
 	return (a->distance > b->distance);
 }
 
-std::list<Node*>	buildPath(Node* last)
+std::list<Node*>	AStarSolver::buildPath(void)
 {
 	std::list<Node*>	lst;
+	Node*				tmp;
 
-	while (last != NULL)
+	tmp = this->_lastNode;
+	while (tmp != NULL)
 	{
-		last->dump();
-		lst.push_front(last);
-		last = last->parent;
+		tmp->dump(); // A virer
+		lst.push_front(tmp);
+		tmp = tmp->parent;
 	}
-	std::cout << "Count = " << lst.size() - 1 << std::endl;
+	std::cout << "Count = " << lst.size() - 1 << std::endl; // A virer
 	return (lst);
 }
 
-typedef std::unordered_set<Node*, decltype(&hash_node), decltype(&eq_node)>	nodes_set;
-typedef std::priority_queue<Node*, std::vector<Node*>, decltype(&less_node)> node_queue;
-
 std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& man) {
 	static Node::Square const	offsets[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}}; //Naze
-//	Node::Square const	offsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; //Bon
+//	static Node::Square const	offsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; //Bon
 	Node::Square		curr_pos0 = topNode->pos0;
 	std::list<Node*>	tmp;
 	Node*				node;
@@ -73,44 +67,39 @@ std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& m
 	return (tmp);
 }
 
-bool	AStarSolver::solve(char **map, const int size)
+AStarSolver::AStarSolver(char **map, char **finalMap, int size)
+	: _size(size), _pool(size), _openlist(&AStarSolver::less_node),
+	  _closelist(100, &AStarSolver::hash_node, &AStarSolver::eq_node),
+	  _firstNode(map, size),
+	  _finalNode(finalMap, size), _man(finalMap, size)
 {
-	NodePool	pool(size);
-	node_queue	openlist(less_node);
-	nodes_set	closelist(100, hash_node, eq_node);
-	char		**final_map = finalSolution(size);;
-	Node		final_node(final_map, size);
-	Manhattan	man(final_map, size);
+	this->_firstNode.heuristic = this->_man.distance(map);
+	this->_openlist.push(&this->_firstNode);
+}
 
-	Node first_node(map, size);
-	first_node.heuristic = man.distance(map);
-
-	openlist.push(&first_node);
-	while (1)
+bool	AStarSolver::solve(void)
+{
+	Node* topNode = this->_openlist.top();
+	this->_openlist.pop();
+	this->_lastNode = topNode;
+	if (topNode->heuristic == 0)
 	{
-		Node* topNode = openlist.top();
-
-		if (topNode->heuristic == 0)
-		{
-			buildPath(openlist.top());
-			break ;
-		}
-		openlist.pop();
-
-		for (Node* node : nextNodes(size, topNode, pool, man))
-		{
-			if (closelist.find(node) == closelist.end())
-			{
-				openlist.push(node);
-			}
-			else
-			{
-				pool.delNode(node);
-			}
-		}
-		closelist.insert(topNode);
+		this->_closelist.insert(topNode);
+		return (false);
 	}
-
+	for (Node* node : nextNodes(this->_size, topNode, this->_pool, this->_man))
+	{
+		if (this->_closelist.find(node) == this->_closelist.end())
+		{
+			this->_openlist.push(node);
+		}
+		else
+		{
+			this->_pool.delNode(node);
+		}
+	}
+	this->_closelist.insert(topNode);
+//	this->_lastNode = topNode;
 	return true;
 }
 
