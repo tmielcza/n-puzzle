@@ -12,24 +12,11 @@ AStarSolver::~AStarSolver() {}
 
 size_t	hash_node(const Node* node)
 {
-	/*
-	size_t	hash = 0;
-	size_t	i = 0;
-
-	for (size_t y = 0; y < node->size; y++)
-	{
-		for (size_t x = 0; x < node->size; x++, i++)
-		{
-			hash ^= ((size_t)(node->map[y][x] & 0xF) << ((i & 7) << 2));
-		}
-	}
-	*/
 	return (node->_hash);
 }
 
 bool	eq_node(const Node* a, const Node* b)
 {
-//	return (hash_node(a) == hash_node(b));
 	return (*a == *b);
 }
 

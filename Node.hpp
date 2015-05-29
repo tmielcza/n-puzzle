@@ -19,7 +19,7 @@ struct Node
 			Node(const char * const * map, int size, int cost, int heuristic, char pos0[2], Node *parent);
 	void	setMap(const char * const * map);
 	Square	find0(const char * const * map, size_t size);
-	void	dump(void);
+	void	dump(void) const;
 	char*	square(const Square& s) const;
 	void	hash(void);
 

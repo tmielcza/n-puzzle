@@ -75,7 +75,7 @@ Node::Square	Node::find0(const char * const * map, size_t size) {
 	return (pos0);
 }
 
-void	Node::dump(void)
+void	Node::dump(void) const
 {
 	for (size_t y = 0; y < this->size; y++)
 	{
