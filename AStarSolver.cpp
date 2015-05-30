@@ -8,6 +8,16 @@
 
 AStarSolver::~AStarSolver() {}
 
+AStarSolver::AStarSolver(char **map, char **finalMap, int size)
+	: _size(size), _pool(size), _openlist(&AStarSolver::less_node),
+	  _closelist(100, &AStarSolver::hash_node, &AStarSolver::eq_node),
+	  _firstNode(map, size),
+	  _finalNode(finalMap, size), _man(finalMap, size)
+{
+	this->_firstNode.heuristic = this->_man.distance(map);
+	this->_openlist.push(&this->_firstNode);
+}
+
 size_t	AStarSolver::hash_node(const Node* node) {
 	return (node->_hash);
 }
@@ -22,25 +32,47 @@ bool	AStarSolver::less_node(const Node* a, const Node* b) {
 	return (a->distance > b->distance);
 }
 
-std::list<Node*>	AStarSolver::buildPath(void)
+constNodes	AStarSolver::buildPath(Node* node) const
 {
-	std::list<Node*>	lst;
-	Node*				tmp;
+	constNodes	lst;
 
-	tmp = this->_lastNode;
-	while (tmp != NULL)
+	node = *this->_closelist.find(node);
+	while (node != NULL)
 	{
-		tmp->dump(); // A virer
-		lst.push_front(tmp);
-		tmp = tmp->parent;
+		lst.push_front(node);
+		node = node->parent;
 	}
-	std::cout << "Count = " << lst.size() - 1 << std::endl; // A virer
 	return (lst);
 }
 
+constNodes	AStarSolver::buildPath(void) const
+{
+	return (this->buildPath(this->_lastNode));
+}
+
+constNodes	AStarSolver::buildMultiPath(const AStarSolver& fromStart, const AStarSolver& fromEnd) {
+	constNodes	ret;
+	if (collide(fromStart, fromEnd))
+	{
+		constNodes	tmp;
+
+		tmp = fromEnd.buildPath(fromStart._lastNode);
+		tmp.erase(--tmp.end());
+		tmp.reverse();
+		ret = fromStart.buildPath();
+		ret.splice(ret.end(), tmp);
+	}
+	else if (collide(fromEnd, fromStart))
+	{
+		ret = buildMultiPath(fromEnd, fromStart);
+		ret.reverse();
+	}
+	std::cout << "Count = " << ret.size() - 1 << std::endl; // A virer
+	return (ret);
+}
+
 std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& man) {
-	static Node::Square const	offsets[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}}; //Naze
-//	static Node::Square const	offsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; //Bon
+	static Node::Square const	offsets[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
 	Node::Square		curr_pos0 = topNode->pos0;
 	std::list<Node*>	tmp;
 	Node*				node;
@@ -67,19 +99,10 @@ std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& m
 	return (tmp);
 }
 
-AStarSolver::AStarSolver(char **map, char **finalMap, int size)
-	: _size(size), _pool(size), _openlist(&AStarSolver::less_node),
-	  _closelist(100, &AStarSolver::hash_node, &AStarSolver::eq_node),
-	  _firstNode(map, size),
-	  _finalNode(finalMap, size), _man(finalMap, size)
-{
-	this->_firstNode.heuristic = this->_man.distance(map);
-	this->_openlist.push(&this->_firstNode);
-}
-
 bool	AStarSolver::solve(void)
 {
 	Node* topNode = this->_openlist.top();
+
 	this->_openlist.pop();
 	this->_lastNode = topNode;
 	if (topNode->heuristic == 0)
@@ -99,7 +122,6 @@ bool	AStarSolver::solve(void)
 		}
 	}
 	this->_closelist.insert(topNode);
-//	this->_lastNode = topNode;
 	return true;
 }
 
@@ -199,4 +221,13 @@ char	**AStarSolver::genMap(size_t size, size_t swaps)
 		swaps--;
 	}
 	return (map);
+}
+
+bool	AStarSolver::collide(const AStarSolver& a, const AStarSolver& b)
+{
+	if (b._closelist.find(a._lastNode) != b._closelist.end())
+	{
+		return (true);
+	}
+	return (false);
 }

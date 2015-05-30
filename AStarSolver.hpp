@@ -11,9 +11,12 @@
 # include "NodePool.hpp"
 # include "Manhattan.hpp"
 
+typedef std::list<const Node*>	constNodes;
+
 class AStarSolver {
 
 public:
+
 	AStarSolver();
 	AStarSolver(char **map, char **finalMap, int size);
 	AStarSolver(AStarSolver const &src);
@@ -24,18 +27,19 @@ public:
 	static char			**finalSolution(int size);
 	static bool			isSolvable(char **map, int size);
 	static char			**getSnailForm(char **map, int size);
-	int					manhattanDistance(char **map, char **map2, int size);
 	char				**genMap(size_t size, size_t swaps);
-	std::list<Node*>	buildPath(void);
+	constNodes			buildPath(void) const;
+	static constNodes	buildMultiPath(const AStarSolver& a, const AStarSolver& b);
 
 	static bool			eq_node(const Node* a, const Node* b);
 	static size_t		hash_node(const Node* node);
 	static bool			less_node(const Node* a, const Node* b);
 
-	const Node*&		getLastNode(void);
-	const void*&		getCloseList(void);
+	static bool			collide(const AStarSolver& a, const AStarSolver& b);
 
 private:
+	constNodes			buildPath(Node* node) const;
+
 	typedef std::unordered_set<Node*, decltype(&AStarSolver::hash_node), decltype(&AStarSolver::eq_node)>	nodes_set;
 	typedef std::priority_queue<Node*, std::vector<Node*>, decltype(&AStarSolver::less_node)> node_queue;
 

@@ -105,8 +105,8 @@ Node&	Node::operator=(const Node& rhs) {
 bool	operator==(const Node& lhs, const Node& rhs) {
 	if (lhs._hash != rhs._hash)
 		return (false);
-	if (lhs.heuristic != rhs.heuristic)
-		return (false);
+//	if (lhs.heuristic != rhs.heuristic)
+//		return (false);
 	for (size_t i = 0; i < lhs.size; i++)
 	{
 		if (memcmp(lhs.map[i], rhs.map[i], lhs.size))

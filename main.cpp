@@ -2,12 +2,12 @@
 
 int main(int ac, char **av)
 {
-	// char map[4][4] = {
-	// 	{4, 3, 2, 5},
-	// 	{12, 1, 15, 14},
-	// 	{10, 11, 13, 6},
-	// 	{0, 9, 8, 7}
-	// };
+// 	char map[4][4] = {
+// 		{4, 3, 2, 5},
+// 		{12, 1, 15, 14},
+// 		{10, 11, 13, 6},
+// 		{0, 9, 8, 7}
+// 	};
 
 //	cui la du forum
 	char map[4][4] = {
@@ -18,12 +18,12 @@ int main(int ac, char **av)
 	};
 
 	// Hardcore mode ...
-	// char map[4][4] = {
-	// 	{0, 15, 14, 13},
-	// 	{5, 4, 3, 12},
-	// 	{6, 2, 1, 11},
-	// 	{7, 8, 9, 10}
-	// };
+// 	char map[4][4] = {
+// 		{0, 15, 14, 13},
+// 		{5, 4, 3, 12},
+// 		{6, 2, 1, 11},
+// 		{7, 8, 9, 10}
+// 	};
 
 	char	**map2 = new char *[4];
 	char	**finalMap = AStarSolver::finalSolution(4);
@@ -36,12 +36,20 @@ int main(int ac, char **av)
 	else
 	{
 		AStarSolver a(map2, finalMap, 4);
+		AStarSolver b(finalMap, map2, 4);
 //		AStarSolver a(NULL, finalMap, 4);
 //		a.finalSolution(atoi(av[1]));
 //		if (a.isSolvable(map2, sizeof(map[0])))
-		while (a.solve())
-		{}
-		a.buildPath();
+		while (a.solve() && b.solve() && !AStarSolver::collide(a, b)
+			   && !AStarSolver::collide(b, a))
+//		while (b.solve())
+		{
+		}
+		for (auto cul : AStarSolver::buildMultiPath(a, b))
+		{
+			cul->dump();
+		}
+//		b.buildPath();
 	}
 	(void)av;
 	return (0);
