@@ -3,7 +3,7 @@
 
 class IHeuristic {
 public:
-	virtual size_t	distance(char **map) = 0;
+	virtual int		distance(const char * const *map) const = 0;
 };
 
 #endif // IHEURISTIC_HPP

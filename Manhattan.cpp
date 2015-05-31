@@ -15,7 +15,7 @@ Manhattan::Manhattan(char **map_final, size_t size) {
 	}
 }
 
-int		Manhattan::distance(char **map) {
+int		Manhattan::distance(const char * const *map) const {
 	int pos;
 	int x_final;
 	int y_final;

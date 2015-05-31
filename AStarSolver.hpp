@@ -18,7 +18,7 @@ class AStarSolver {
 public:
 
 	AStarSolver();
-	AStarSolver(char **map, char **finalMap, int size);
+	AStarSolver(char **map, char **finalMap, int size, IHeuristic& heuristic);
 	AStarSolver(AStarSolver const &src);
 	~AStarSolver();
 
@@ -30,6 +30,7 @@ public:
 	char				**genMap(size_t size, size_t swaps);
 	constNodes			buildPath(void) const;
 	static constNodes	buildMultiPath(const AStarSolver& a, const AStarSolver& b);
+	std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool)
 
 	static bool			eq_node(const Node* a, const Node* b);
 	static size_t		hash_node(const Node* node);
@@ -50,7 +51,7 @@ private:
 	Node		_firstNode;
 	Node		_finalNode;
 	Node*		_lastNode;
-	Manhattan	_man;
+	IHeuristic&	_heuristic;
 };
 
 #endif // ASTARSOLVER_HPP

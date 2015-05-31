@@ -35,8 +35,10 @@ int main(int ac, char **av)
 		std::cout << "error" << std::endl;
 	else
 	{
-		AStarSolver a(map2, finalMap, 4);
-		AStarSolver b(finalMap, map2, 4);
+		Manhattan aheur(map2, 4);
+		Manhattan bheur(finalMap, 4);
+		AStarSolver a(map2, finalMap, 4, aheur);
+		AStarSolver b(finalMap, map2, 4, bheur);
 //		AStarSolver a(NULL, finalMap, 4);
 //		a.finalSolution(atoi(av[1]));
 //		if (a.isSolvable(map2, sizeof(map[0])))

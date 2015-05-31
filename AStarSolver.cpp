@@ -4,17 +4,18 @@
 #include "AStarSolver.hpp"
 #include "Node.hpp"
 #include "NodePool.hpp"
-#include "Manhattan.hpp"
+#include "IHeuristic.hpp"
 
 AStarSolver::~AStarSolver() {}
 
-AStarSolver::AStarSolver(char **map, char **finalMap, int size)
+AStarSolver::AStarSolver(char **map, char **finalMap, int size, IHeuristic& heuristic)
 	: _size(size), _pool(size), _openlist(&AStarSolver::less_node),
 	  _closelist(100, &AStarSolver::hash_node, &AStarSolver::eq_node),
 	  _firstNode(map, size),
-	  _finalNode(finalMap, size), _man(finalMap, size)
+	  _finalNode(finalMap, size), _heuristic(heuristic)
 {
-	this->_firstNode.heuristic = this->_man.distance(map);
+//	std::cout << this->_heuristic.distance(map);
+	this->_firstNode.heuristic = this->_heuristic.distance(map);
 	this->_openlist.push(&this->_firstNode);
 }
 
@@ -57,7 +58,7 @@ constNodes	AStarSolver::buildMultiPath(const AStarSolver& fromStart, const AStar
 		constNodes	tmp;
 
 		tmp = fromEnd.buildPath(fromStart._lastNode);
-		tmp.erase(--tmp.end());
+		tmp.pop_back();
 		tmp.reverse();
 		ret = fromStart.buildPath();
 		ret.splice(ret.end(), tmp);
@@ -71,12 +72,12 @@ constNodes	AStarSolver::buildMultiPath(const AStarSolver& fromStart, const AStar
 	return (ret);
 }
 
-std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& man) {
+std::list<Node*>	AStarSolver::nextNodes(int size, Node* topNode, NodePool& pool) {
 	static Node::Square const	offsets[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
 	Node::Square		curr_pos0 = topNode->pos0;
 	std::list<Node*>	tmp;
 	Node*				node;
-	
+
 	for (int i = 0; i < 4; i++)
 	{
 		Node::Square checked;
@@ -88,7 +89,7 @@ std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool, Manhattan& m
 			*node->square(curr_pos0) = *node->square(checked);
 			*node->square(checked) = 0;
 			node->cost += 1;
-			node->heuristic = man.distance(node->map);
+			node->heuristic = this->_heuristic.distance(node->map);
 			node->distance = node->cost + node->heuristic;
 			node->pos0 = checked;
 			node->parent = topNode;
@@ -110,7 +111,7 @@ bool	AStarSolver::solve(void)
 		this->_closelist.insert(topNode);
 		return (false);
 	}
-	for (Node* node : nextNodes(this->_size, topNode, this->_pool, this->_man))
+	for (Node* node : nextNodes(this->_size, topNode, this->_pool))
 	{
 		if (this->_closelist.find(node) == this->_closelist.end())
 		{
