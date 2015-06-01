@@ -4,7 +4,8 @@ SRC=main.cpp \
 	NodePool.cpp \
 	Node.cpp \
 	Manhattan.cpp \
-	Dijkstra.cpp
+	Dijkstra.cpp \
+	Parser.cpp
 
 OBJ = $(SRC:.cpp=.o)
 FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3

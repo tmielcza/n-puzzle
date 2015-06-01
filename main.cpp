@@ -1,61 +1,75 @@
+#include <ctime>
 #include "AStarSolver.hpp"
-# include "Manhattan.hpp"
-# include "Dijkstra.hpp"
+#include "Parser.hpp"
+#include "Manhattan.hpp"
 
 int main(int ac, char **av)
 {
-// 	char map[4][4] = {
-// 		{4, 3, 2, 5},
-// 		{12, 1, 15, 14},
-// 		{10, 11, 13, 6},
-// 		{0, 9, 8, 7}
-// 	};
+	int size = 0;
+	char **map = NULL;
 
-//	cui la du forum
-// 	char map[4][4] = {
-// 	{4, 15, 1, 2},
-// 	{0, 14, 8, 13},
-// 	{10, 12, 3, 9},
-// 	{11, 5, 7, 6}
-// 	};
+	// char **map2 = new char *[4];
+	// char map[4][4] = {
+	// 	{4, 3, 2, 5},
+	// 	{12, 1, 15, 14},
+	// 	{10, 11, 13, 6},
+	// 	{0, 9, 8, 7}
+	// };
 
-	// Hardcore mode ...
-	char map[4][4] = {
-		{0, 15, 14, 13},
-		{5, 4, 3, 12},
-		{6, 2, 1, 11},
-		{7, 8, 9, 10}
-	};
+	// cui la du forum
+	// char map[4][4] = {
+	// {4, 15, 1, 2},
+	// {0, 14, 8, 13},
+	// {10, 12, 3, 9},
+	// {11, 5, 7, 6}
+	// };
 
-	char	**map2 = new char *[4];
-	char	**finalMap = AStarSolver::finalSolution(4);
-	for (size_t i = 0; i < sizeof(map[0]) / sizeof(map[0][0]); i++)
-	{
-		map2[i] = &map[i][0];
+	// Hardcore mode = 80 coups...
+	// char map[4][4] = {
+	// 	{15, 14, 13, 12},
+	// 	{10, 11, 8, 9},
+	// 	{2, 6, 5, 1},
+	// 	{3, 7, 4, 0}
+	// };
+
+	if (ac > 2) {
+		std::cout << "Error." << std::endl;
+		exit (1);
 	}
-	if (ac  > 2)
-		std::cout << "error" << std::endl;
+	if (ac == 1)
+	{
+		std::cout << "Map generation" << std::endl;
+		size = arc4random() % 14 + 3;
+		map = AStarSolver::genMap(size, 0);
+	}
 	else
 	{
-		Manhattan aheur(finalMap, 4);
-//		Manhattan bheur(map2, 4);
-		Dijkstra bheur;
-		AStarSolver a(map2, finalMap, 4, aheur);
-		AStarSolver b(finalMap, map2, 4, bheur);
-
-		while (b.solve() && b.lastNode().cost < 20) { }
-		while (a.solve() && !AStarSolver::collide(a, b)) { }
-
-//		while (a.solve() && b.solve() && !AStarSolver::collide(a, b)
-//			   && !AStarSolver::collide(b, a))
-//		{ }
-
-		for (auto cul : AStarSolver::buildMultiPath(a, b))
-		{
-			cul->dump();
-		}
-
+		Parser b;
+		map = b.get_map(av[1]);
+		size = b.getSize();
 	}
-	(void)av;
+	if (map != NULL)
+	{
+		Manhattan	heur(AStarSolver::finalSolution(size), size);
+		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
+		if (AStarSolver::isSolvable(map, size))
+		{
+			while (a.solve());
+			for (auto atom : a.buildPath())
+			{
+				atom->dump();
+			}
+		}
+		else
+		{
+			std::cout << "Error : Not solvable." << std::endl;
+			exit (1);
+		}
+	}
+	else
+	{
+		std::cout << "Error : Bad map." << std::endl;
+		exit (1);
+	}
 	return (0);
 }

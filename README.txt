@@ -12,6 +12,7 @@ Ferme ta gueule, Tom.
    (+ 2/3 autres heuristiques)
 3) Faire le parser (en cours...)
 4) Calculer les stats
+4 bis) Refaire ce Makefile pourri qui pue des fesseuis.olio,
 5) Bidirectionnel (bonus)
 6) Faire une interface graphique (bonus)
 7) Avec quelques options, une ou deux heuristiques en plus, et la rapidite du bordel, on est large niveau bonus.

@@ -133,8 +133,8 @@ char	**AStarSolver::getSnailForm(char **map, int size) {
 	int y = 0;
 	int ix = 1;
 	int iy = 0;
-	int	maxx = 2;
-	int	maxy = 1;
+	int	maxx = 0;
+	int	maxy = 0;
 
 	for (int i = 0; i < total_size; i++)
 	{
@@ -142,17 +142,19 @@ char	**AStarSolver::getSnailForm(char **map, int size) {
 		int ny = y + iy;
 
 		newMap[i] = &map[y][x];
-		if (nx < 0 || nx >= size || (ix != 0 && (ix > 0 ? nx >= size + maxx - 1 : nx <= 0 - maxx)))
+		if (nx < 0 || nx >= size || (ix != 0 && (ix > 0 ? nx >= size + maxx : nx < 0 - maxx)))
 		{
+			if (nx <= 0 || (ix < 0 && nx < 0 - maxx))
+				maxx -= 1;
 			iy = ix;
 			ix = 0;
-			maxx -= 1;
 		}
-		else if (ny < 0 || ny >= size || (iy != 0 && (iy > 0 ? ny >= size + maxy - 1 : ny <= 0 - maxy)))
+		else if (ny < 0 || ny >= size || (iy != 0 && (iy > 0 ? ny >= size + maxy : ny < 0 - maxy)))
 		{
+			if (ny >= size || (iy > 0 && ny >= size + maxy))
+				maxy -= 1;
 			ix = -iy;
 			iy = 0;
-			maxy -= 1;
 		}
 		x += ix;
 		y += iy;
@@ -200,16 +202,15 @@ char	**AStarSolver::genMap(size_t size, size_t swaps)
 	char	offsets[4][2] = {
 		{1, 0}, {0, 1}, {-1, 0}, {0, -1}
 	};
-	int		count = 0;
 	char	pos0[2] = {(char)(size / 2), (char)(size / 2 - (size % 2 == 0 ? 1 : 0))};
 
 	if (swaps == 0)
 	{
-		swaps = rand() % 1400;
+		swaps = arc4random() % 1400;
 	}
 	while (swaps > 0)
 	{
-		int		off = rand() % 4;
+		int		off = arc4random() % 4;
 		char	swapPos[2] = {(char)(pos0[0] + offsets[off][0]), char(pos0[1] + offsets[off][1])};
 		if (swapPos[0] >= 0 && swapPos[0] < (int)size && swapPos[1] >= 0 && swapPos[1] < (int)size)
 		{
@@ -218,7 +219,6 @@ char	**AStarSolver::genMap(size_t size, size_t swaps)
 			pos0[0] = swapPos[0];
 			pos0[1] = swapPos[1];
 		}
-		count = (count + 1) & 0xF;
 		swaps--;
 	}
 	return (map);
