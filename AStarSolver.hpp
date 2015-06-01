@@ -9,7 +9,7 @@
 # include <list>
 # include "Node.hpp"
 # include "NodePool.hpp"
-# include "Manhattan.hpp"
+# include "IHeuristic.hpp"
 
 typedef std::list<const Node*>	constNodes;
 
@@ -24,13 +24,16 @@ public:
 
 	AStarSolver			&operator=(AStarSolver const &rhs);
 	bool				solve(void);
+	char				**genMap(size_t size, size_t swaps);
+	constNodes			buildPath(void) const;
+	std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool);
+	const Node&			lastNode(void);
+
 	static char			**finalSolution(int size);
 	static bool			isSolvable(char **map, int size);
 	static char			**getSnailForm(char **map, int size);
-	char				**genMap(size_t size, size_t swaps);
-	constNodes			buildPath(void) const;
+
 	static constNodes	buildMultiPath(const AStarSolver& a, const AStarSolver& b);
-	std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool)
 
 	static bool			eq_node(const Node* a, const Node* b);
 	static size_t		hash_node(const Node* node);

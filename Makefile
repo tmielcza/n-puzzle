@@ -3,7 +3,8 @@ SRC=main.cpp \
 	AStarSolver.cpp \
 	NodePool.cpp \
 	Node.cpp \
-	Manhattan.cpp
+	Manhattan.cpp \
+	Dijkstra.cpp
 
 OBJ = $(SRC:.cpp=.o)
 FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3

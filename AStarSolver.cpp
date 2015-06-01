@@ -4,7 +4,6 @@
 #include "AStarSolver.hpp"
 #include "Node.hpp"
 #include "NodePool.hpp"
-#include "IHeuristic.hpp"
 
 AStarSolver::~AStarSolver() {}
 
@@ -14,10 +13,11 @@ AStarSolver::AStarSolver(char **map, char **finalMap, int size, IHeuristic& heur
 	  _firstNode(map, size),
 	  _finalNode(finalMap, size), _heuristic(heuristic)
 {
-//	std::cout << this->_heuristic.distance(map);
 	this->_firstNode.heuristic = this->_heuristic.distance(map);
 	this->_openlist.push(&this->_firstNode);
 }
+
+const Node&		AStarSolver::lastNode(void) { return (*this->_lastNode); }
 
 size_t	AStarSolver::hash_node(const Node* node) {
 	return (node->_hash);
