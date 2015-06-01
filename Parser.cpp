@@ -4,25 +4,26 @@ Parser::Parser() : size(0), justGetSize(false), numberLine(0) {}
 
 Parser::~Parser() {}
 
-// char *Parser::convert(char **map)
-// {
-//   int k = 0;
-//   char *str = new char[this->size * this->size];
-//   for (int i = 0; i < this->size; i++)
-//   {
-//     for (int j = 0; map[i][j] != '\0' ; j++)
-//     {
-//       std::cout <<  (int)map[i][j] << std::endl;
-//       str[k] = map[i][j];
-//       k++;
-//     }
-//   }
-//   return (str);
-// }
+char *Parser::convert(char **map)
+{
+  int k = 0;
+  char *str = new char[this->size * this->size];
+  for (int i = 0; i < this->size; i++)
+  {
+    for (int j = 0; j < this->size ; j++)
+    {
+      str[k] = map[i][j];
+      k++;
+    }
+  }
+  return (str);
+}
 
 bool Parser::parsing(std::string line)
 {
   int i = 0;
+  std::string stock;
+  int count = 0;
 
   this->comment = false;
   while (line[i] == ' ')
@@ -32,19 +33,39 @@ bool Parser::parsing(std::string line)
     this->comment = true;
     return true;
   }
-  for (int j = i; line[j]; j++)
+  for (unsigned int j = i; line[j]; j++)
   {
     if (isdigit(line[j]) == 0 && line[j] != ' ')
-      return false;
+    {
+      if (line[j] == '#' && this->size != 0)
+      {
+        for (unsigned int k = 0; line[k] != '#'; k++)
+        {
+          while (isdigit(line[k]) != 0)
+          {
+            stock += line[k];
+            k++;
+          }
+          if (stock != "")
+          {
+            count++;
+            stock = "";
+          }
+        }
+        if (count != this->size)
+          return false;
+        return true;
+      }
+    }
     if (isdigit(line[j]) != 0 && this->size == 0)
     {
-      while (line[j] != '\0' && line[j] != '#' && line[j] != '\n')
+      while (j < line.size() && line[j] != '#')
       {
         if (line[j] == ' ')
         {
-          while (line[j] == ' ' && line[j] != '\0' && line[j] != '\n' && line[j] != '#')
+          while (line[j] == ' ' && j < line.size() && line[j] != '#')
             j++;
-          if (line[j] != '\0' && line[j] != '\n' && line[j] != '#')
+          if (j < line.size() && line[j] != '#')
             return false;
         }
         this->stockSize += line[j];
@@ -66,7 +87,7 @@ char **Parser::get_map(char *map)
   std::string line;
   char **map_file;
   int number = 0;
-//  char *str;
+  char *str;
 
   file.open(map);
   while (file.good())
@@ -92,29 +113,20 @@ char **Parser::get_map(char *map)
     {
       if (this->comment == false)
       {
-        std::cout << "line = " <<  line << std::endl;
         int count = 0;
         int index = 0;
-        for (int j = 0; line[j] != '\0' && line[j] != '#' && line[j] != '\n'; j++)
+        for (unsigned int j = 0; line[j] != '#' && j < line.size(); j++)
         {
-    //      std::cout << "line[j] : " << line[j] << std::endl << "ascii : " << (int)line[j] << std::endl;
-          std::cout << "line[" << j << "] hors while [DEBUT]: " << line[j] << std::endl;
           while (isdigit(line[j]) != 0)
           {
-            std::cout << "line[" << j << "] dans while : " << line[j] << std::endl;
             this->stockNumber += line[j];
             j++;
           }
-          std::cout << "line[" << j << "] hors while [FIN]: " << line[j] << std::endl;
           if (this->stockNumber != "")
           {
-            std::cout << "stocknumber : " << this->stockNumber << std::endl;
             count++;
-            std::cout << "count : " << count << std::endl;
             if (count > this->size)
-            {
               return NULL;
-            }
             std::stringstream(this->stockNumber) >> number;
             map_file[this->numberLine][index] = number;
             this->stockNumber = "";
@@ -123,23 +135,20 @@ char **Parser::get_map(char *map)
         }
         this->numberLine++;
       }
-      else
-        std::cout << "COMMENT = TRUE" << std::endl;
     }
 
   }
-  // str = convert(map_file);
-  // std::sort(str, str+(size*size));
-  // for (int i = 0; i < (size * size); i++)
-  // {
-  //   std::cout << "str : " << (int)str[i] << std::endl;
-  //   if (str[i] != i)
-  //     return NULL;
-  // }
-
-
-
-  // mettre dans un seul tableau. Trier. Checker que ca va bien jusqu a size*size - 1
+  if ((this->numberLine - 1) != this->size)
+    return NULL;
+   str = convert(map_file);
+   std::sort(str, str+(size*size));
+   for (int i = 0; i < (size * size); i++)
+   {
+     std::cout << "str : " << (int)str[i] << std::endl;
+     if (str[i] != i)
+       return NULL;
+  }
+  delete str;
   return map_file;
 }
 

@@ -5,6 +5,7 @@
 # include <cstdlib>
 # include <cstdio>
 # include <queue>
+# include <cstring>
 # include <unordered_set>
 # include <list>
 # include "Node.hpp"

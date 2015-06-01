@@ -19,5 +19,5 @@ Ferme ta gueule, Tom.
 
 
 
-// finir parser, regler pb de ligne a 5 chiffres au lieu de 4, finir commentaire en fin de ligne + espaces, regarder que y ait pas de doublon
+// modif rand avec arc4random + checker memset
 // gerer args

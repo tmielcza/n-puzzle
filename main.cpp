@@ -39,7 +39,7 @@ int main(int ac, char **av)
 	if (ac == 1)
 	{
 		std::cout << "Map generation" << std::endl;
-		size = arc4random() % 14 + 3;
+		size = rand() % 14 + 3;
 		map = AStarSolver::genMap(size, 0);
 	}
 	else

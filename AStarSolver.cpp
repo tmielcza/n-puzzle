@@ -186,7 +186,7 @@ char	**AStarSolver::finalSolution(int size) {
 	for (int i = 0; i < size; i++)
 	{
 		newMap[i] = new char[size];
-		memset(newMap[i], size, 0);
+		memset(newMap[i], 0, size);
 	}
 	snailMap = getSnailForm(newMap, size);
 	for (int i = 0; i < total_size - 1; i++)
@@ -206,11 +206,11 @@ char	**AStarSolver::genMap(size_t size, size_t swaps)
 
 	if (swaps == 0)
 	{
-		swaps = arc4random() % 1400;
+		swaps = rand() % 1400;
 	}
 	while (swaps > 0)
 	{
-		int		off = arc4random() % 4;
+		int		off = rand() % 4;
 		char	swapPos[2] = {(char)(pos0[0] + offsets[off][0]), char(pos0[1] + offsets[off][1])};
 		if (swapPos[0] >= 0 && swapPos[0] < (int)size && swapPos[1] >= 0 && swapPos[1] < (int)size)
 		{
