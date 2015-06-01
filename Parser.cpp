@@ -98,16 +98,19 @@ char **Parser::get_map(char *map)
         for (int j = 0; line[j] != '\0' && line[j] != '#' && line[j] != '\n'; j++)
         {
     //      std::cout << "line[j] : " << line[j] << std::endl << "ascii : " << (int)line[j] << std::endl;
+          std::cout << "line[" << j << "] hors while [DEBUT]: " << line[j] << std::endl;
           while (isdigit(line[j]) != 0)
           {
+            std::cout << "line[" << j << "] dans while : " << line[j] << std::endl;
             this->stockNumber += line[j];
             j++;
           }
+          std::cout << "line[" << j << "] hors while [FIN]: " << line[j] << std::endl;
           if (this->stockNumber != "")
           {
             std::cout << "stocknumber : " << this->stockNumber << std::endl;
-            std::cout << count << std::endl;
             count++;
+            std::cout << "count : " << count << std::endl;
             if (count > this->size)
             {
               return NULL;
@@ -120,6 +123,8 @@ char **Parser::get_map(char *map)
         }
         this->numberLine++;
       }
+      else
+        std::cout << "COMMENT = TRUE" << std::endl;
     }
 
   }

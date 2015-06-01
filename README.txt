@@ -16,3 +16,8 @@ Ferme ta gueule, Tom.
 5) Bidirectionnel (bonus)
 6) Faire une interface graphique (bonus)
 7) Avec quelques options, une ou deux heuristiques en plus, et la rapidite du bordel, on est large niveau bonus.
+
+
+
+// finir parser, regler pb de ligne a 5 chiffres au lieu de 4, finir commentaire en fin de ligne + espaces, regarder que y ait pas de doublon
+// gerer args
