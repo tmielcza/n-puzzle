@@ -5,10 +5,11 @@ SRC = main.cpp \
 	Node.cpp \
 	Manhattan.cpp \
 	Dijkstra.cpp \
+	LinearConflict.cpp \
 	Parser.cpp
 
 OBJ = $(SRC:.cpp=.o)
-FLAGS = -Wall -Wextra  -std=c++11 -g -O3
+FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3
 
 all: $(NAME)
 

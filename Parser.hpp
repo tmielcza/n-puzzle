@@ -19,7 +19,9 @@ public:
   int getSize(void);
   char *convert(char **map);
 
+
 private:
+  void remove(char **map);
   int size;
   bool justGetSize;
   std::string stockSize;

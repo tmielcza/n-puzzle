@@ -4,6 +4,13 @@ Parser::Parser() : size(0), justGetSize(false), numberLine(0) {}
 
 Parser::~Parser() {}
 
+void Parser::remove(char **map)
+{
+  for (int i = 0; i < this->size; i++)
+    delete map[i];
+  delete map;
+}
+
 char *Parser::convert(char **map)
 {
   int k = 0;
@@ -56,6 +63,8 @@ bool Parser::parsing(std::string line)
           return false;
         return true;
       }
+      else
+        return false;
     }
     if (isdigit(line[j]) != 0 && this->size == 0)
     {
@@ -96,10 +105,7 @@ char **Parser::get_map(char *map)
     if (!parsing(line)) // ERROR
     {
       if (this->size != 0)
-      {
-        // boucle pour del map_file
-        delete(map_file);
-      }
+        remove(map_file);
       return NULL;
     }
     else if (this->justGetSize) // creation map
@@ -136,18 +142,20 @@ char **Parser::get_map(char *map)
         this->numberLine++;
       }
     }
-
   }
   if ((this->numberLine - 1) != this->size)
     return NULL;
-   str = convert(map_file);
-   std::sort(str, str+(size*size));
-   for (int i = 0; i < (size * size); i++)
+ str = convert(map_file);
+ std::sort(str, str+(size*size));
+ for (int i = 0; i < (size * size); i++)
+ {
+   if (str[i] != i)
    {
-     std::cout << "str : " << (int)str[i] << std::endl;
-     if (str[i] != i)
-       return NULL;
-  }
+     remove(map_file);
+     delete str;
+     return NULL;
+   }
+}
   delete str;
   return map_file;
 }

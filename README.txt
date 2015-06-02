@@ -3,21 +3,17 @@ Tu comprends rien. Tu mens. J'avoue. C'est vrai ? Tkt.
 Ferme ta gueule, Tom.
 <3 C'est ma bite
 
-0) Calculer solution finale de la map
-1) Faire A*
+V 0) Calculer solution finale de la map
+V 1) Faire A*
   - // classe Grille qui represente l'etat de la grille (1 pere, 2 fils au min, 4 au max)
   - // openlist = priority queue && closed list = map
   - // Verifier si ca fonctionne...
-2) // Faire Manhattan
-   (+ 2/3 autres heuristiques)
-3) Faire le parser (en cours...)
-4) Calculer les stats
-4 bis) Refaire ce Makefile pourri qui pue des fesseuis.olio,
-5) Bidirectionnel (bonus)
-6) Faire une interface graphique (bonus)
-7) Avec quelques options, une ou deux heuristiques en plus, et la rapidite du bordel, on est large niveau bonus.
-
-
-
-// modif rand avec arc4random + checker memset
-// gerer args
+V 2) // Faire Manhattan
+  ~ (+ 2/3 autres heuristiques) [LinearConflict OK]
+V 3) Faire le parser
+X 4) Calculer les stats
+X 4 bis) gerer args (-s, taille, -b bidirectionnel, -h heuristique)
+X 4 ter) Refaire ce Makefile pourri qui pue des fesseuis.olio
+X 4 truc) Refaire les classes en coplien
+V 5) Bidirectionnel (bonus)
+~ 6) Faire une interface graphique (bonus)
