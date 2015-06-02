@@ -9,7 +9,7 @@ V 1) Faire A*
   - // openlist = priority queue && closed list = map
   - // Verifier si ca fonctionne...
 V 2) // Faire Manhattan
-  ~ (+ 2/3 autres heuristiques) [LinearConflict OK]
+  ~ (+ 2/3 autres heuristiques) [LinearConflict OK, MisplacedTiles, X-Y, Manhattan + MisplacedTiles]
 V 3) Faire le parser
 X 4) Calculer les stats
 X 4 bis) gerer args (-s, taille, -b bidirectionnel, -h heuristique)
