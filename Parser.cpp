@@ -23,10 +23,7 @@ bool Parser::get_options(int ac, char **av)
     {
       if (av[i++] == '\0')
         return false;
-      if (strcmp(av[i], "manhattan") == 0 || strcmp(av[i], "linearconflict") == 0)
-        name_h = av[i];
-      else
-        return false;
+      name_h = av[i];
       h += 1;
     }
     else if (strcmp(av[i], "-s") == 0)

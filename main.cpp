@@ -10,6 +10,8 @@ int main(int ac, char **av)
 	char **map = NULL;
 	bool bi = false;
 	std::string heuristic;
+	std::string manhattan("manhattan");
+	std::string linearconflict("linearconflict");
 	Parser b;
 
 	if (ac > 7)
@@ -26,7 +28,11 @@ int main(int ac, char **av)
 		bi = b.getOptionBi();
 		if (map[0][0] == 'O')
 			map = AStarSolver::genMap(size, 0);
-		LinearConflict	heur(AStarSolver::finalSolution(size), size);
+		Manhattan	heur(AStarSolver::finalSolution(size), size);
+		if (heuristic == linearconflict)
+			LinearConflict	heur(AStarSolver::finalSolution(size), size);
+		else if (heuristic != manhattan)
+			goto error_heuristic;
 		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
 		if (AStarSolver::isSolvable(map, size))
 		{
@@ -46,6 +52,9 @@ int main(int ac, char **av)
 		exit (1);
 	error_options:
 		std::cout << "Bad options" << std::endl;
+		exit (1);
+	error_heuristic:
+		std::cout << "Heuristic doesn't exist" << std::endl;
 		exit (1);
 	error_not_solvable:
 		std::cout << "Not solvable" << std::endl;
