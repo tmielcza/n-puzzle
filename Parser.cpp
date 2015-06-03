@@ -21,7 +21,10 @@ bool Parser::get_options(char **av)
       b += 1;
     else if (strcmp(av[i], "-h") == 0)
     {
-      i++;
+      if (av[i++])
+        i++;
+      else
+        return false;
       if (strcmp(av[i], "manhattan") == 0 || strcmp(av[i], "linearconflict") == 0)
         name_h += av[i]; // verif que possible
       else
@@ -30,7 +33,10 @@ bool Parser::get_options(char **av)
     }
     else if (strcmp(av[i], "-s") == 0)
     {
-      i++;
+      if (av[i++])
+        i++;
+      else
+        return false;
       int k = 0;
       while (av[i][k] != '\0')
       {

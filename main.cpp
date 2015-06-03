@@ -5,6 +5,7 @@
 #include "LinearConflict.hpp"
 
 
+
 int main(int ac, char **av)
 {
 	int size = rand() % 14 + 3;
@@ -24,7 +25,11 @@ int main(int ac, char **av)
 	size = b.getSize();
 	if (map != NULL)
 	{
-		b.get_options(av);
+		if (!b.get_options(av))
+		{
+			std::cout << "Error" << std::endl;
+			exit (1);
+		}
 		options = b.getOptions();
 		if (strncmp(options.c_str(), " b ", 3) == 0)
 			bi = true;
