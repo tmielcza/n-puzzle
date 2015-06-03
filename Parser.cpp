@@ -5,24 +5,19 @@ Parser::Parser() : size(0), justGetSize(false), numberLine(0), options("") {}
 Parser::~Parser() {}
 
 
-bool Parser::get_option(int ac, char **av)
+bool Parser::get_options(char **av)
 {
   int s = 0;
   int b = 0;
   int h = 0;
-  int si = 0;
   int f = 0;
-  int size = 0;
+  std::string size = "";
   std::ifstream file;
   std::string name_h = "";
 
-  if (ac > 6)
-    return false;
   for (int i = 1; av[i] != '\0'; i++)
   {
-    if (strcmp(av[i], "-s") == 0)
-      s += 1;
-    else if (strcmp(av[i], "-b") == 0)
+    if (strcmp(av[i], "-b") == 0)
       b += 1;
     else if (strcmp(av[i], "-h") == 0)
     {
@@ -33,8 +28,9 @@ bool Parser::get_option(int ac, char **av)
         return false;
       h += 1;
     }
-    else if (isdigit(av[i][0]) != 0)
+    else if (strcmp(av[i], "-s") == 0)
     {
+      i++;
       int k = 0;
       while (av[i][k] != '\0')
       {
@@ -42,10 +38,10 @@ bool Parser::get_option(int ac, char **av)
           return false;
         k++;
       }
-    size = atoi(av[i]);
-    if (size > 17)
-      return false;
-    si += 1;
+      size += av[i];
+      if (atoi(size.c_str()) > 17)
+        return false;
+      s += 1;
     }
     else
     {
@@ -59,18 +55,21 @@ bool Parser::get_option(int ac, char **av)
       }
     }
   }
-  if (s > 1 || b > 1 || h > 1 || si > 1 || f > 1)
+  if (s > 1 || b > 1 || h > 1 || f > 1)
     return false;
-  if (f == 1 && (s >= 1 || si >= 1))
+  if (f == 1 && s >= 1)
     return false;
   if (s == 1)
-    this->options += s;
+  {
+    this->options += size;
+    std::cout << "size = " << size << std::endl;
+    std::cout << "options = " << this->options << std::endl;
+  }
   if (b == 1)
     this->options += b;
   if (h == 1)
     this->options += name_h;
-  if (si == 1)
-    this->options += size;
+
   return true;
 }
 

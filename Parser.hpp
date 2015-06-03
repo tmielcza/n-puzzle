@@ -19,7 +19,7 @@ public:
   char **get_map(char *map);
   int getSize(void);
   char *convert(char **map);
-  bool get_option(int ac, char **av);
+  bool get_options(char **av);
   std::string getOptions(void);
 
 
