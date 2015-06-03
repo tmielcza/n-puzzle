@@ -228,17 +228,17 @@ char **Parser::get_map(char *map)
   }
   if ((this->numberLine - 1) != this->size)
     return NULL;
- str = convert(map_file);
- std::sort(str, str+(size*size));
- for (int i = 0; i < (size * size); i++)
- {
+  str = convert(map_file);
+  std::sort(str, str+(size*size));
+  for (int i = 0; i < (size * size); i++)
+  {
    if (str[i] != i)
    {
      remove(map_file);
      delete str;
      return NULL;
    }
- }
+  }
   delete str;
   return map_file;
 }
