@@ -60,15 +60,11 @@ bool Parser::get_options(char **av)
   if (f == 1 && s >= 1)
     return false;
   if (s == 1)
-  {
-    this->options += size;
-    std::cout << "size = " << size << std::endl;
-    std::cout << "options = " << this->options << std::endl;
-  }
+    this->options += "size = " + size + " ";
   if (b == 1)
-    this->options += b;
+    this->options += " b ";
   if (h == 1)
-    this->options += name_h;
+    this->options += "heuristic = " + name_h;
 
   return true;
 }

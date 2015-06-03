@@ -7,29 +7,55 @@
 
 int main(int ac, char **av)
 {
-	int size = 0;
+	int size = rand() % 14 + 3;
 	std::string options = "";
 	char **map = NULL;
+	bool bi = false;
+	std::string stocksize;
+	std::size_t pos;
 
 	if (ac > 6)
 	{
 		std::cout << "Error" << std::endl;
 		exit (1);
 	}
-	if (ac == 1)
+	Parser b;
+	map = b.get_map(av[1]);
+	size = b.getSize();
+	if (map != NULL)
 	{
-		std::cout << "Map generation" << std::endl;
-		size = rand() % 14 + 3;
-		map = AStarSolver::genMap(size, 0);
+		b.get_options(av);
+		options = b.getOptions();
+		if (strncmp(options.c_str(), " b ", 3) == 0)
+			bi = true;
+		if (options.find("heuristic = ") != std::string::npos)
+		{
+			char heuristic[20];
+			pos = options.find("heuristic = ") + 12;
+			int k = 0;
+			for (unsigned int i = pos; i < options.size() && options[i] != ' '; i++)
+			{
+				heuristic[k] = options[i];
+				k++;
+			}
+			heuristic[k] = '\0';
+		}
+		if (options.find("size = ") != std::string::npos)
+		{
+			pos = options.find("size = ") + 7;
+			for (unsigned int i = pos; i < options.size() && options[i] != ' '; i++)
+				stocksize += options[i];
+			std::stringstream(stocksize) >> size;
+		}
+		if (map[0][0] == 'O')
+			map = AStarSolver::genMap(size, 0);
 		LinearConflict	heur(AStarSolver::finalSolution(size), size);
 		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
 		if (AStarSolver::isSolvable(map, size))
 		{
 			while (a.solve());
 			for (auto atom : a.buildPath())
-			{
 				atom->dump();
-			}
 			std::cout << "Count : " << a.buildPath().size() << std::endl;
 		}
 		else
@@ -40,46 +66,8 @@ int main(int ac, char **av)
 	}
 	else
 	{
-		Parser b;
-		map = b.get_map(av[1]);
-		size = b.getSize();
-		if (map != NULL)
-		{
-			b.get_options(av);
-			options = b.getOptions();
-			// checker les options
-			if (map[0][0] == 'O')
-			{
-				std::cout << "je rentre et je genere ma map avec les options = " << std::endl;
-				std::cout << options << std::endl;
-			}
-			else
-			{
-				std::cout << "je rentre et j'execute' avec les options = " << std::endl;
-				std::cout << options << std::endl;
-				LinearConflict	heur(AStarSolver::finalSolution(size), size);
-				AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
-				if (AStarSolver::isSolvable(map, size))
-				{
-					while (a.solve());
-					for (auto atom : a.buildPath())
-					{
-						atom->dump();
-					}
-					std::cout << "Count : " << a.buildPath().size() << std::endl;
-				}
-				else
-				{
-					std::cout << "Error : Not solvable." << std::endl;
-					exit (1);
-				}
-			}
-		}
-		else
-		{
-			std::cout << "Error : Bad map." << std::endl;
-			exit (1);
-		}
+		std::cout << "Error : Bad map." << std::endl;
+		exit (1);
 	}
 	return (0);
 }
