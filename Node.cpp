@@ -14,6 +14,9 @@ void	Node::setMap(const char * const * map) {
 
 Node::Node(void) {}
 
+Node::~Node(void) {}
+
+
 Node::Node(size_t size) : size(size) {
 	this->map = new char*[size];
 	for (size_t i = 0; i < size; i++)

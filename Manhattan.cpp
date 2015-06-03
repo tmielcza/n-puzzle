@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include "Manhattan.hpp"
 
+Manhattan::~Manhattan() {}
+
 Manhattan::Manhattan(char **map_final, size_t size) {
 	this->map_pos = new Node::Square[size * size];
 	this->size = (int)size;

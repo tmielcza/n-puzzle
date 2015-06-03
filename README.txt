@@ -14,6 +14,6 @@ V 3) Faire le parser
 X 4) Calculer les stats
 X 4 bis) gerer args (-s, taille, -b bidirectionnel, -h heuristique)
 X 4 ter) Refaire ce Makefile pourri qui pue des fesseuis.olio
-X 4 truc) Refaire les classes en coplien
+X 4 truc) Refaire les classes en coplien -> OK mais pourquoi Node a son Node(); + operator= + constructeur par copie implémenté ?
 V 5) Bidirectionnel (bonus)
 ~ 6) Faire une interface graphique (bonus)
