@@ -9,6 +9,7 @@
 #include <cstring>
 
 class Parser {
+
 public:
   Parser();
   Parser(Parser const &src);
@@ -20,9 +21,9 @@ public:
   int getSize(void);
   char *convert(char **map);
   bool get_options(int ac, char **av);
-  std::string getOptions(void);
-
-
+  std::string getOptionH(void);
+  int getOptionSize();
+  bool getOptionBi();
 
 
 private:
@@ -33,7 +34,10 @@ private:
   std::string stockNumber;
   bool comment;
   int numberLine;
-  std::string options;
+  std::string optionH;
+  bool optionBi;
+  int optionSize;
+
 
 };
 

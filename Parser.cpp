@@ -1,6 +1,6 @@
 #include "Parser.hpp"
 
-Parser::Parser() : size(0), justGetSize(false), numberLine(0), options("") {}
+Parser::Parser() : size(0), justGetSize(false), numberLine(0), optionH(""), optionBi(false), optionSize(0) {}
 
 Parser::~Parser() {}
 
@@ -11,11 +11,11 @@ bool Parser::get_options(int ac, char **av)
   int b = 0;
   int h = 0;
   int f = 0;
-  std::string size = "";
+  std::string size;
   std::ifstream file;
-  std::string name_h = "";
+  std::string name_h;
 
-  for (int i = 1; i != ac; i++)
+  for (int i = 1; i != ac - 1; i++)
   {
     if (strcmp(av[i], "-b") == 0)
       b += 1;
@@ -24,7 +24,7 @@ bool Parser::get_options(int ac, char **av)
       if (av[i++] == '\0')
         return false;
       if (strcmp(av[i], "manhattan") == 0 || strcmp(av[i], "linearconflict") == 0)
-        name_h += av[i];
+        name_h = av[i];
       else
         return false;
       h += 1;
@@ -40,8 +40,8 @@ bool Parser::get_options(int ac, char **av)
           return false;
         k++;
       }
-      size += av[i];
-      if (atoi(size.c_str()) > 17)
+      size = av[i];
+      if (atoi(size.c_str()) > 17 && atoi(size.c_str()) < 3)
         return false;
       s += 1;
     }
@@ -49,7 +49,7 @@ bool Parser::get_options(int ac, char **av)
     {
       file.open(av[i]);
       if (file.fail())
-        return false;
+           return false;
       else
       {
         file.close();
@@ -60,22 +60,29 @@ bool Parser::get_options(int ac, char **av)
   if (s > 1 || b > 1 || h > 1 || f > 1)
     return false;
   if (f == 1 && s >= 1)
-  {
     return false;
-  }
   if (s == 1)
-    this->options += "size = " + size + " ";
+    std::stringstream(size) >> this->optionSize;
   if (b == 1)
-    this->options += " b ";
+    this->optionBi = true;
   if (h == 1)
-    this->options += "heuristic = " + name_h;
-
+    this->optionH += name_h;
   return true;
 }
 
-std::string Parser::getOptions()
+int Parser::getOptionSize()
 {
-  return this->options;
+  return this->optionSize;
+}
+
+std::string Parser::getOptionH()
+{
+  return this->optionH;
+}
+
+bool Parser::getOptionBi()
+{
+  return this->optionBi;
 }
 
 void Parser::remove(char **map)
