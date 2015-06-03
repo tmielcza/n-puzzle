@@ -1,8 +1,36 @@
 #include <ctime>
+#include <cstdlib>
 #include "AStarSolver.hpp"
 #include "Parser.hpp"
 #include "Manhattan.hpp"
 #include "LinearConflict.hpp"
+
+typedef enum {
+	ERR_TOOMANYARGS,
+	ERR_BADOPTS,
+	ERR_BADHEURISTIC,
+	ERR_NOTSOLVABLE,
+	ERR_BADMAP
+} npuzzle_error_t;
+
+void error(npuwzzle_error_t error, char **map)
+{
+	if (error == ERR_TOOMANYARGS)
+		std::cout << "Too many args" << std::endl;
+	else if (error == ERR_BADOPTS)
+		std::cout << "Bad options" << std::endl;
+	else if (error == ERR_BADHEURISTIC)
+		std::cout << "Heuristic doesn't exist" << std::endl;
+	else if (error == ERR_NOTSOLVABLE)
+		std::cout << "Not solvable" << std::endl;
+	else if (error == ERR_BADMAP)
+		std::cout << "Bad map" << std::endl;
+	if (map != NULL)
+	{
+		std::cout << "clean map" << std::endl;
+	}
+	std::exit(EXIT_FAILURE);
+}
 
 int main(int ac, char **av)
 {
@@ -15,13 +43,13 @@ int main(int ac, char **av)
 	Parser b;
 
 	if (ac > 7)
-		goto error_args;
+		error(ERR_TOOMANYARGS, map);
 	map = b.get_map(av[1]);
 	size = b.getSize();
 	if (map != NULL)
 	{
 		if (!b.get_options(ac, av))
-			goto error_options;
+			error(ERR_BADOPTS, map);
 		if (b.getOptionSize() > 2 && b.getOptionSize() < 17)
 			size = b.getOptionSize();
 		heuristic =  b.getOptionH();
@@ -32,7 +60,7 @@ int main(int ac, char **av)
 		if (heuristic == linearconflict)
 			LinearConflict	heur(AStarSolver::finalSolution(size), size);
 		else if (heuristic != manhattan)
-			goto error_heuristic;
+			error(ERR_BADHEURISTIC, map);
 		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
 		if (AStarSolver::isSolvable(map, size))
 		{
@@ -42,26 +70,10 @@ int main(int ac, char **av)
 			std::cout << "Count : " << a.buildPath().size() << std::endl;
 		}
 		else
-			goto error_not_solvable;
+			error(ERR_NOTSOLVABLE, map);
 	}
 	else
-		goto error_map;
-
-	error_args:
-		std::cout << "Too many args" << std::endl;
-		exit (1);
-	error_options:
-		std::cout << "Bad options" << std::endl;
-		exit (1);
-	error_heuristic:
-		std::cout << "Heuristic doesn't exist" << std::endl;
-		exit (1);
-	error_not_solvable:
-		std::cout << "Not solvable" << std::endl;
-		exit (1);
-	error_map:
-		std::cout << "Bad map" << std::endl;
-		exit (1);
+		error(ERR_BADMAP, map);
 
 	return (0);
 }

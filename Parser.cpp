@@ -46,12 +46,10 @@ bool Parser::get_options(int ac, char **av)
     {
       file.open(av[i]);
       if (file.fail())
-           return false;
+         return false;
       else
-      {
         file.close();
-        f += 1;
-      }
+      f += 1;
     }
   }
   if (s > 1 || b > 1 || h > 1 || f > 1)
