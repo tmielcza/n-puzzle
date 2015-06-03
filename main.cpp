@@ -34,7 +34,7 @@ void error(npuwzzle_error_t error, char **map)
 
 int main(int ac, char **av)
 {
-	int size = rand() % 14 + 3;
+	int size = arc4random() % 14 + 3;
 	char **map = NULL;
 	bool bi = false;
 	std::string heuristic;
