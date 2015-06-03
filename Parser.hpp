@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <cstring>
 
 class Parser {
 public:
@@ -18,6 +19,10 @@ public:
   char **get_map(char *map);
   int getSize(void);
   char *convert(char **map);
+  bool get_option(int ac, char **av);
+  std::string getOptions(void);
+
+
 
 
 private:
@@ -28,6 +33,7 @@ private:
   std::string stockNumber;
   bool comment;
   int numberLine;
+  std::string options;
 
 };
 

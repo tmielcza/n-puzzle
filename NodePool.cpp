@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-NodePool::~NodePool();
-
 NodePool::NodePool(size_t size)
 {
 	this->size = size;

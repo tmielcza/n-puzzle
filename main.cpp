@@ -10,14 +10,10 @@ int main(int ac, char **av)
 	int size = 0;
 	char **map = NULL;
 
-	if (ac > 2) {
-		std::cout << "Error." << std::endl;
-		exit (1);
-	}
 	if (ac == 1)
 	{
 		std::cout << "Map generation" << std::endl;
-		size = arc4random() % 14 + 3;
+		size = rand() % 14 + 3;
 		map = AStarSolver::genMap(size, 0);
 	}
 	else
@@ -28,21 +24,28 @@ int main(int ac, char **av)
 	}
 	if (map != NULL)
 	{
-		LinearConflict	heur(AStarSolver::finalSolution(size), size);
-		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
-		if (AStarSolver::isSolvable(map, size))
-		{
-			while (a.solve());
-			for (auto atom : a.buildPath())
-			{
-				atom->dump();
-			}
-			std::cout << "Count : " << a.buildPath().size() << std::endl;
-		}
+		// checker les options
+		if (map[0][0] == 'O')
+			std::cout << "je rentre et je genere ma map avec les options" << std::endl;
 		else
 		{
-			std::cout << "Error : Not solvable." << std::endl;
-			exit (1);
+			std::cout << "je rentre et j'execute' avec les options" << std::endl;
+			LinearConflict	heur(AStarSolver::finalSolution(size), size);
+			AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
+			if (AStarSolver::isSolvable(map, size))
+			{
+				while (a.solve());
+				for (auto atom : a.buildPath())
+				{
+					atom->dump();
+				}
+				std::cout << "Count : " << a.buildPath().size() << std::endl;
+			}
+			else
+			{
+				std::cout << "Error : Not solvable." << std::endl;
+				exit (1);
+			}
 		}
 	}
 	else

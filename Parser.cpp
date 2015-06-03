@@ -1,8 +1,83 @@
 #include "Parser.hpp"
 
-Parser::Parser() : size(0), justGetSize(false), numberLine(0) {}
+Parser::Parser() : size(0), justGetSize(false), numberLine(0), options("") {}
 
 Parser::~Parser() {}
+
+
+bool Parser::get_option(int ac, char **av)
+{
+  int s = 0;
+  int b = 0;
+  int h = 0;
+  int si = 0;
+  int f = 0;
+  int size = 0;
+  std::ifstream file;
+  std::string name_h = "";
+
+  if (ac > 6)
+    return false;
+  for (int i = 1; av[i] != '\0'; i++)
+  {
+    if (strcmp(av[i], "-s") == 0)
+      s += 1;
+    else if (strcmp(av[i], "-b") == 0)
+      b += 1;
+    else if (strcmp(av[i], "-h") == 0)
+    {
+      i++;
+      if (strcmp(av[i], "manhattan") == 0 || strcmp(av[i], "linearconflict") == 0)
+        name_h += av[i]; // verif que possible
+      else
+        return false;
+      h += 1;
+    }
+    else if (isdigit(av[i][0]) != 0)
+    {
+      int k = 0;
+      while (av[i][k] != '\0')
+      {
+        if (av[i][k] <= 48 && av[i][k] >= 57)
+          return false;
+        k++;
+      }
+    size = atoi(av[i]);
+    if (size > 17)
+      return false;
+    si += 1;
+    }
+    else
+    {
+      file.open(av[i]);
+      if (file.fail())
+        return false;
+      else
+      {
+        file.close();
+        f += 1;
+      }
+    }
+  }
+  if (s > 1 || b > 1 || h > 1 || si > 1 || f > 1)
+    return false;
+  if (f == 1 && (s >= 1 || si >= 1))
+    return false;
+  if (s == 1)
+    this->options += s;
+  if (b == 1)
+    this->options += b;
+  if (h == 1)
+    this->options += name_h;
+  if (si == 1)
+    this->options += size;
+  return true;
+}
+
+std::string Parser::getOptions()
+{
+  return this->options;
+}
 
 void Parser::remove(char **map)
 {
@@ -99,6 +174,13 @@ char **Parser::get_map(char *map)
   char *str;
 
   file.open(map);
+  if (file.fail())
+  {
+    map_file = new char*[1];
+    map_file[0] = new char[1];
+    map_file[0][0] = 'O';
+    return map_file;
+  }
   while (file.good())
   {
     getline(file, line);
@@ -155,7 +237,7 @@ char **Parser::get_map(char *map)
      delete str;
      return NULL;
    }
-}
+ }
   delete str;
   return map_file;
 }

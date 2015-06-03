@@ -12,8 +12,9 @@ V 2) // Faire Manhattan
   ~ (+ 2/3 autres heuristiques) [LinearConflict OK, MisplacedTiles, X-Y, Manhattan + MisplacedTiles]
 V 3) Faire le parser
 X 4) Calculer les stats
-X 4 bis) gerer args (-s, taille, -b bidirectionnel, -h heuristique)
+X 4 bis) gerer args (-s, taille, -b bidirectionnel, -h heuristique) -> est ce qu'on prend en compte les cas ou le fichier peut etre "12"
+ou "-s" ou "46ae" etc pour pas confondre avec la taille/autre bonus ou on dit yolo fais pas le con ?
 X 4 ter) Refaire ce Makefile pourri qui pue des fesseuis.olio
-X 4 truc) Refaire les classes en coplien -> OK mais pourquoi Node a son Node(); + operator= + constructeur par copie implémenté ?
+V 4 truc) Refaire les classes en coplien -> OK mais pourquoi Node a son Node(); + operator= + constructeur par copie implémenté ? + verif pour celles qui heritent d'une interface
 V 5) Bidirectionnel (bonus)
 ~ 6) Faire une interface graphique (bonus)

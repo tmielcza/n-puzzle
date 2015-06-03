@@ -9,7 +9,7 @@ SRC = main.cpp \
 	Parser.cpp
 
 OBJ = $(SRC:.cpp=.o)
-FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3
+FLAGS = -Wall -Wextra -std=c++11 -g -O3
 
 all: $(NAME)
 
