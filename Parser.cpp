@@ -5,7 +5,7 @@ Parser::Parser() : size(0), justGetSize(false), numberLine(0), options("") {}
 Parser::~Parser() {}
 
 
-bool Parser::get_options(char **av)
+bool Parser::get_options(int ac, char **av)
 {
   int s = 0;
   int b = 0;
@@ -15,27 +15,23 @@ bool Parser::get_options(char **av)
   std::ifstream file;
   std::string name_h = "";
 
-  for (int i = 1; av[i] != '\0'; i++)
+  for (int i = 1; i != ac; i++)
   {
     if (strcmp(av[i], "-b") == 0)
       b += 1;
     else if (strcmp(av[i], "-h") == 0)
     {
-      if (av[i++])
-        i++;
-      else
+      if (av[i++] == '\0')
         return false;
       if (strcmp(av[i], "manhattan") == 0 || strcmp(av[i], "linearconflict") == 0)
-        name_h += av[i]; // verif que possible
+        name_h += av[i];
       else
         return false;
       h += 1;
     }
     else if (strcmp(av[i], "-s") == 0)
     {
-      if (av[i++])
-        i++;
-      else
+      if (av[i++] == '\0')
         return false;
       int k = 0;
       while (av[i][k] != '\0')
@@ -64,7 +60,9 @@ bool Parser::get_options(char **av)
   if (s > 1 || b > 1 || h > 1 || f > 1)
     return false;
   if (f == 1 && s >= 1)
+  {
     return false;
+  }
   if (s == 1)
     this->options += "size = " + size + " ";
   if (b == 1)

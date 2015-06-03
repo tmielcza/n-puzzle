@@ -25,7 +25,7 @@ int main(int ac, char **av)
 	size = b.getSize();
 	if (map != NULL)
 	{
-		if (!b.get_options(av))
+		if (!b.get_options(ac, av))
 		{
 			std::cout << "Error" << std::endl;
 			exit (1);
