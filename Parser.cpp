@@ -15,21 +15,28 @@ bool Parser::get_options(int ac, char **av)
   std::ifstream file;
   std::string name_h;
 
-  for (int i = 1; i != ac - 1; i++)
+//  std::cout << "bonjour" << std::endl;
+  if (ac == 1)
+    return true;
+  for (int i = 1; i != ac; i++)
   {
+//    std::cout << "av[i] = " << av[i] << std::endl;
     if (strcmp(av[i], "-b") == 0)
       b += 1;
     else if (strcmp(av[i], "-h") == 0)
     {
-      if (av[i++] == '\0')
+      if (av[i + 1] == NULL)
         return false;
+      i++;
       name_h = av[i];
       h += 1;
     }
     else if (strcmp(av[i], "-s") == 0)
     {
-      if (av[i++] == '\0')
+  //    std::cout << "av[i++] = " << av[i + 1] << std::endl;
+      if (av[i + 1] == NULL)
         return false;
+      i++;
       int k = 0;
       while (av[i][k] != '\0')
       {
@@ -38,6 +45,7 @@ bool Parser::get_options(int ac, char **av)
         k++;
       }
       size = av[i];
+  //    std::cout << "it's here" << std::endl;
       if (atoi(size.c_str()) > 17 && atoi(size.c_str()) < 3)
         return false;
       s += 1;
@@ -52,6 +60,7 @@ bool Parser::get_options(int ac, char **av)
       f += 1;
     }
   }
+//  std::cout << "au revoir" << std::endl;
   if (s > 1 || b > 1 || h > 1 || f > 1)
     return false;
   if (f == 1 && s >= 1)

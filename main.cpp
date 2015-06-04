@@ -13,7 +13,7 @@ typedef enum {
 	ERR_BADMAP
 } npuzzle_error_t;
 
-void error(npuwzzle_error_t error, char **map)
+void error(npuzzle_error_t error, char **map)
 {
 	if (error == ERR_TOOMANYARGS)
 		std::cout << "Too many args" << std::endl;
@@ -36,7 +36,6 @@ int main(int ac, char **av)
 {
 	int size = arc4random() % 14 + 3;
 	char **map = NULL;
-	bool bi = false;
 	std::string heuristic;
 	std::string manhattan("manhattan");
 	std::string linearconflict("linearconflict");
@@ -45,7 +44,6 @@ int main(int ac, char **av)
 	if (ac > 7)
 		error(ERR_TOOMANYARGS, map);
 	map = b.get_map(av[1]);
-	size = b.getSize();
 	if (map != NULL)
 	{
 		if (!b.get_options(ac, av))
@@ -53,17 +51,21 @@ int main(int ac, char **av)
 		if (b.getOptionSize() > 2 && b.getOptionSize() < 17)
 			size = b.getOptionSize();
 		heuristic =  b.getOptionH();
-		bi = b.getOptionBi();
 		if (map[0][0] == 'O')
 			map = AStarSolver::genMap(size, 0);
+		else
+			size = b.getSize();
+		if (b.getOptionBi() == true)
+			std::cout << "kikoo" << std::endl;
 		Manhattan	heur(AStarSolver::finalSolution(size), size);
-		if (heuristic == linearconflict)
+		if (heuristic != "" && heuristic == linearconflict)
 			LinearConflict	heur(AStarSolver::finalSolution(size), size);
-		else if (heuristic != manhattan)
+		else if (heuristic != "" && heuristic != manhattan)
 			error(ERR_BADHEURISTIC, map);
 		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
 		if (AStarSolver::isSolvable(map, size))
 		{
+			std::cout << "I m aliiiive" << std::endl;
 			while (a.solve());
 			for (auto atom : a.buildPath())
 				atom->dump();
