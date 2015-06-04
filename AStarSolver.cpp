@@ -68,7 +68,6 @@ constNodes	AStarSolver::buildMultiPath(const AStarSolver& fromStart, const AStar
 		ret = buildMultiPath(fromEnd, fromStart);
 		ret.reverse();
 	}
-	std::cout << "Count = " << ret.size() - 1 << std::endl; // A virer
 	return (ret);
 }
 
