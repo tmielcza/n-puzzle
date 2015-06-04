@@ -4,6 +4,7 @@
 #include "Parser.hpp"
 #include "Manhattan.hpp"
 #include "LinearConflict.hpp"
+#include "MisplacedTiles.hpp"
 
 typedef enum {
 	ERR_TOOMANYARGS,
@@ -37,8 +38,6 @@ int main(int ac, char **av)
 	int size = arc4random() % 14 + 3;
 	char **map = NULL;
 	std::string heuristic;
-	std::string manhattan("manhattan");
-	std::string linearconflict("linearconflict");
 	Parser b;
 
 	if (ac > 7)
@@ -58,8 +57,10 @@ int main(int ac, char **av)
 		if (b.getOptionBi() == true)
 			std::cout << "kikoo" << std::endl;
 		Manhattan	heur(AStarSolver::finalSolution(size), size);
-		if (heuristic != "" && heuristic == linearconflict)
+		if (heuristic != "" && heuristic == "linearconflict")
 			LinearConflict	heur(AStarSolver::finalSolution(size), size);
+		else if (heuristic != "" && heuristic == "misplacedtiles")
+			MisplacedTiles heur(AStarSolver::finalSolution(size), size);
 		else if (heuristic != "" && heuristic != manhattan)
 			error(ERR_BADHEURISTIC, map);
 		AStarSolver a(map, AStarSolver::finalSolution(size), size, heur);
