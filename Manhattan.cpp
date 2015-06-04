@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include "Manhattan.hpp"
 
+Manhattan::~Manhattan() {}
+
 Manhattan::Manhattan(char **map_final, size_t size) {
 	this->map_pos = new Node::Square[size * size];
 	this->size = (int)size;
@@ -30,8 +32,6 @@ int		Manhattan::distance(const char * const *map) const {
 			pos = map[y][x];
 			y_final = this->map_pos[pos].y;
 			x_final = this->map_pos[pos].x;
-//			if (x != x_final || y != y_final)
-//				cumul += 1;
 			cumul += std::abs(x_final - x);
 			cumul += std::abs(y_final - y);
 		}

@@ -6,10 +6,12 @@ SRC = main.cpp \
 	Manhattan.cpp \
 	Dijkstra.cpp \
 	LinearConflict.cpp \
-	Parser.cpp
+	Parser.cpp \
+	MisplacedTiles.cpp \
+	HeuristicFactory.cpp
 
 OBJ = $(SRC:.cpp=.o)
-FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3
+FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3 -march=native
 
 all: $(NAME)
 

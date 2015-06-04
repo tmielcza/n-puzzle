@@ -11,7 +11,8 @@ AStarSolver::AStarSolver(char **map, char **finalMap, int size, IHeuristic& heur
 	: _size(size), _pool(size), _openlist(&AStarSolver::less_node),
 	  _closelist(100, &AStarSolver::hash_node, &AStarSolver::eq_node),
 	  _firstNode(map, size),
-	  _finalNode(finalMap, size), _heuristic(heuristic)
+	  _finalNode(finalMap, size), _heuristic(heuristic),
+	  _totalStates(0), _maxStates(0)
 {
 	this->_firstNode.heuristic = this->_heuristic.distance(map);
 	this->_openlist.push(&this->_firstNode);
@@ -31,6 +32,14 @@ bool	AStarSolver::less_node(const Node* a, const Node* b) {
 	if (a->distance == b->distance)
 		return (a->cost < b->cost);
 	return (a->distance > b->distance);
+}
+
+size_t	AStarSolver::getTotalStates () {
+	return (this->_totalStates);
+}
+
+size_t	AStarSolver::getMaxStates() {
+	return (this->_maxStates);
 }
 
 constNodes	AStarSolver::buildPath(Node* node) const
@@ -73,6 +82,7 @@ constNodes	AStarSolver::buildMultiPath(const AStarSolver& fromStart, const AStar
 
 std::list<Node*>	AStarSolver::nextNodes(int size, Node* topNode, NodePool& pool) {
 	static Node::Square const	offsets[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+//	static Node::Square const	offsets[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	Node::Square		curr_pos0 = topNode->pos0;
 	std::list<Node*>	tmp;
 	Node*				node;
@@ -114,6 +124,7 @@ bool	AStarSolver::solve(void)
 	{
 		if (this->_closelist.find(node) == this->_closelist.end())
 		{
+			this->_totalStates++;
 			this->_openlist.push(node);
 		}
 		else
@@ -122,6 +133,10 @@ bool	AStarSolver::solve(void)
 		}
 	}
 	this->_closelist.insert(topNode);
+	if (this->_openlist.size() + this->_closelist.size() > this->_maxStates)
+	{
+		this->_maxStates = this->_openlist.size() + this->_closelist.size();
+	}
 	return true;
 }
 

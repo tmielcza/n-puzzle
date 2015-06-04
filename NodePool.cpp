@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-		NodePool::NodePool(size_t size)
+NodePool::NodePool(size_t size)
 {
 	this->size = size;
 	this->allocateNodes(1000);

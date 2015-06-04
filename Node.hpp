@@ -12,11 +12,12 @@ struct Node
 		int	y;
 	};
 
-			Node(size_t size);
-			Node();
-			Node(const Node& src);
-			Node(const char * const * map, int size);
-			Node(const char * const * map, int size, int cost, int heuristic, char pos0[2], Node *parent);
+	Node();
+	Node(size_t size);
+	Node(const Node& src);
+	Node(const char * const * map, int size);
+	Node(const char * const * map, int size, int cost, int heuristic, char pos0[2], Node *parent);
+	~Node();
 	void	setMap(const char * const * map);
 	Square	find0(const char * const * map, size_t size);
 	void	dump(void) const;

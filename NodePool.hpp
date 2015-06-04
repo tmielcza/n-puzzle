@@ -7,9 +7,9 @@
 class NodePool {
 public:
 	NodePool(void);
+	NodePool(const NodePool& src);
 	NodePool(size_t size);
 	~NodePool(void);
-	NodePool(const NodePool& src);
 
 	NodePool&	operator=(const NodePool& rhs);
 

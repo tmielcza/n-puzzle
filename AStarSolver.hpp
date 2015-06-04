@@ -28,6 +28,8 @@ public:
 	constNodes			buildPath(void) const;
 	std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool);
 	const Node&			lastNode(void);
+	size_t				getTotalStates();
+	size_t				getMaxStates();
 
 	static char			**genMap(size_t size, size_t swaps);
 	static char			**finalSolution(int size);
@@ -56,6 +58,8 @@ private:
 	Node		_finalNode;
 	Node*		_lastNode;
 	IHeuristic&	_heuristic;
+	size_t		_totalStates;
+	size_t		_maxStates;
 };
 
 #endif // ASTARSOLVER_HPP
