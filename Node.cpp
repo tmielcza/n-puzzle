@@ -107,14 +107,7 @@ Node&	Node::operator=(const Node& rhs) {
 bool	operator==(const Node& lhs, const Node& rhs) {
 	if (lhs._hash != rhs._hash)
 		return (false);
-	for (size_t i = 0; i < lhs.size; i++)
-	{
-		if (memcmp(lhs.map[i], rhs.map[i], lhs.size))
-		{
-			return (false);
-		}
-	}
-	return (true);
+	return std::equal(lhs.map[0], lhs.map[0] + lhs.size * lhs.size, rhs.map[0]);
 }
 
 bool	operator<(const Node& lhs, const Node& rhs) {

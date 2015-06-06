@@ -25,9 +25,9 @@ int		LinearConflictPlus::distance(const char * const *map) const {
       Node::Square s = this->map_pos[num];
       if (num != 0)
       {
-        if (s.x == x ) // virer le cast
+        if (s.x == x )
           this->cols[x].push_back(s.y);
-        if (s.y == y) // Pareil
+        if (s.y == y)
           this->rows[y].push_back(s.x);
       }
     }
