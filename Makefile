@@ -8,7 +8,8 @@ SRC = main.cpp \
 	LinearConflict.cpp \
 	Parser.cpp \
 	MisplacedTiles.cpp \
-	HeuristicFactory.cpp
+	HeuristicFactory.cpp \
+	LinearConflictPlus.cpp
 
 OBJ = $(SRC:.cpp=.o)
 FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3 -march=native

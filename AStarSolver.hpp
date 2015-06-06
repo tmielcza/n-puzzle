@@ -5,6 +5,7 @@
 # include <cstdlib>
 # include <cstdio>
 # include <queue>
+# include <vector>
 # include <cstring>
 # include <unordered_set>
 # include <list>
@@ -26,7 +27,6 @@ public:
 	AStarSolver			&operator=(AStarSolver const &rhs);
 	bool				solve(void);
 	constNodes			buildPath(void) const;
-	std::list<Node*>	nextNodes(int size, Node* topNode, NodePool& pool);
 	const Node&			lastNode(void);
 	size_t				getTotalStates();
 	size_t				getMaxStates();
@@ -45,6 +45,7 @@ public:
 	static bool			collide(const AStarSolver& a, const AStarSolver& b);
 
 private:
+	void				createNextNodes(int size, Node* topNode, NodePool& pool);
 	constNodes			buildPath(Node* node) const;
 
 	typedef std::unordered_set<Node*, decltype(&AStarSolver::hash_node), decltype(&AStarSolver::eq_node)>	nodes_set;
@@ -60,6 +61,7 @@ private:
 	IHeuristic&	_heuristic;
 	size_t		_totalStates;
 	size_t		_maxStates;
+	std::vector<Node*>	_nextNodes;
 };
 
 #endif // ASTARSOLVER_HPP

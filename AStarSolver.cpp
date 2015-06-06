@@ -16,6 +16,7 @@ AStarSolver::AStarSolver(char **map, char **finalMap, int size, IHeuristic& heur
 {
 	this->_firstNode.heuristic = this->_heuristic.distance(map);
 	this->_openlist.push(&this->_firstNode);
+	this->_nextNodes.reserve(4);
 }
 
 const Node&		AStarSolver::lastNode(void) { return (*this->_lastNode); }
@@ -80,13 +81,12 @@ constNodes	AStarSolver::buildMultiPath(const AStarSolver& fromStart, const AStar
 	return (ret);
 }
 
-std::list<Node*>	AStarSolver::nextNodes(int size, Node* topNode, NodePool& pool) {
+void	AStarSolver::createNextNodes(int size, Node* topNode, NodePool& pool) {
 	static Node::Square const	offsets[4] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
-//	static Node::Square const	offsets[4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	Node::Square		curr_pos0 = topNode->pos0;
-	std::list<Node*>	tmp;
 	Node*				node;
 
+	this->_nextNodes.clear();
 	for (int i = 0; i < 4; i++)
 	{
 		Node::Square checked;
@@ -103,10 +103,9 @@ std::list<Node*>	AStarSolver::nextNodes(int size, Node* topNode, NodePool& pool)
 			node->pos0 = checked;
 			node->parent = topNode;
 			node->hash();
-			tmp.push_back(node);
+			this->_nextNodes.push_back(node);
 		}
 	}
-	return (tmp);
 }
 
 bool	AStarSolver::solve(void)
@@ -120,7 +119,8 @@ bool	AStarSolver::solve(void)
 		this->_closelist.insert(topNode);
 		return (false);
 	}
-	for (Node* node : nextNodes(this->_size, topNode, this->_pool))
+	this->createNextNodes(this->_size, topNode, this->_pool);
+	for (Node* node : this->_nextNodes)
 	{
 		if (this->_closelist.find(node) == this->_closelist.end())
 		{
@@ -240,7 +240,9 @@ char	**AStarSolver::genMap(size_t size, size_t swaps)
 
 bool	AStarSolver::collide(const AStarSolver& a, const AStarSolver& b)
 {
-	if (b._closelist.find(a._lastNode) != b._closelist.end())
+	auto	found = b._closelist.find(a._lastNode);
+
+	if (found != b._closelist.end() && (*found)->cost - 6 <= a._lastNode->heuristic)
 	{
 		return (true);
 	}

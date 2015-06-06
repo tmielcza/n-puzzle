@@ -91,8 +91,7 @@ bool Parser::getOptionBi()
 
 void Parser::remove(char **map)
 {
-  for (int i = 0; i < this->size; i++)
-    delete map[i];
+  delete map[0];
   delete map;
 }
 
@@ -203,8 +202,9 @@ char **Parser::get_map(char *map)
     else if (this->justGetSize) // creation map
     {
       map_file = new char*[this->size];
-      for (int i = 0; i < this->size; i++)
-        map_file[i] = new char[this->size];
+	  map_file[0] = new char[this->size * this->size];
+      for (int i = 1; i < this->size; i++)
+        map_file[i] = map_file[0] + this->size * i;
       this->justGetSize = false;
     }
     else // enregistrement map

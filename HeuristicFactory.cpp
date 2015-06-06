@@ -1,6 +1,7 @@
 #include "HeuristicFactory.hpp"
 #include "Manhattan.hpp"
 #include "LinearConflict.hpp"
+#include "LinearConflictPlus.hpp"
 #include "MisplacedTiles.hpp"
 #include "Dijkstra.hpp"
 
@@ -26,5 +27,7 @@ IHeuristic *HeuristicFactory::createHeuristic(std::string name, char **finalMap,
 		ret = new MisplacedTiles(finalMap, size);
 	else if (name == "one")
 		ret = new Dijkstra();
+	else if (name == "linearconflictplus")
+		ret = new LinearConflictPlus(finalMap, size);
 	return ret;
 }

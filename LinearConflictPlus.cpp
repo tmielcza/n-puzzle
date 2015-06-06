@@ -1,14 +1,19 @@
-# include "LinearConflict.hpp"
+# include "LinearConflictPlus.hpp"
 # include <unistd.h>
 
-LinearConflict::LinearConflict(char **final_map, size_t size) : Manhattan(final_map, size) {
-  this->rows = new std::list<char>[this->size];
-  this->cols = new std::list<char>[this->size];
+LinearConflictPlus::LinearConflictPlus(char **final_map, size_t size) : Manhattan(final_map, size) {
+  this->rows = new std::vector<char>[this->size];
+  this->cols = new std::vector<char>[this->size];
+  for (size_t i = 0; i < size; i++)
+  {
+	  this->rows[i].reserve(size);
+	  this->cols[i].reserve(size);
+  }
 }
 
-LinearConflict::~LinearConflict() {}
+LinearConflictPlus::~LinearConflictPlus() {}
 
-int		LinearConflict::distance(const char * const *map) const {
+int		LinearConflictPlus::distance(const char * const *map) const {
 
 	int cumul = Manhattan::distance(map);
 
@@ -35,8 +40,7 @@ int		LinearConflict::distance(const char * const *map) const {
       {
         if (*i > *j)
         {
-//			cumul += 2 + (abs(*i - *j) - 1); // Plus rapide. Je sais pas si c'est admissible.
-          cumul += 2;
+			cumul += 2 + (abs(*i - *j) - 1); // Plus rapide. Je sais pas si c'est admissible.
         }
       }
     }
@@ -48,8 +52,7 @@ int		LinearConflict::distance(const char * const *map) const {
       for (auto j = (++i)--; j != this->cols[k].end(); j++)
       {
         if (*i > *j)
-//			cumul += 2 + (abs(*i - *j) - 1); // Plus rapide. Je sais pas si c'est admissible.
-          cumul += 2;
+			cumul += 2 + (abs(*i - *j) - 1); // Plus rapide. Je sais pas si c'est admissible.
       }
     }
   }
@@ -57,6 +60,10 @@ int		LinearConflict::distance(const char * const *map) const {
   {
     this->cols[i].clear();
     this->rows[i].clear();
+  }
+  if (cumul > 10)
+  {
+	  cumul *= 1.1;
   }
   return cumul;
 }

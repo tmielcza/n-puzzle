@@ -1,15 +1,10 @@
 #include <iostream>
 #include <cstring>
+#include <algorithm>
 #include "Node.hpp"
 
 void	Node::setMap(const char * const * map) {
-	for (size_t x = 0; x < this->size; x++)
-	{
-		for (size_t y = 0; y < this->size; y++)
-		{
-			this->map[y][x] = map[y][x];
-		}
-	}
+	std::copy(map[0], map[0] + this->size * this->size, this->map[0]);
 }
 
 Node::Node(void) {}
@@ -19,10 +14,9 @@ Node::~Node(void) {}
 
 Node::Node(size_t size) : size(size) {
 	this->map = new char*[size];
-	for (size_t i = 0; i < size; i++)
-	{
-		this->map[i] = new char[size];
-	}
+	this->map[0] = new char[size * size];
+	for (size_t i = 1; i < size; i++)
+		this->map[i] = this->map[0] + size * i;
 }
 
 Node::Node(const char * const * map, int size)
@@ -93,6 +87,7 @@ void	Node::dump(void) const
 	}
 	std::cout << std::endl;
 	std::cout << "f(x): " << this->distance << std::endl;
+	std::cout << "h(x): " << this->heuristic << std::endl;
 }
 
 char*	Node::square(const Square& s) const {
@@ -112,8 +107,6 @@ Node&	Node::operator=(const Node& rhs) {
 bool	operator==(const Node& lhs, const Node& rhs) {
 	if (lhs._hash != rhs._hash)
 		return (false);
-//	if (lhs.heuristic != rhs.heuristic)
-//		return (false);
 	for (size_t i = 0; i < lhs.size; i++)
 	{
 		if (memcmp(lhs.map[i], rhs.map[i], lhs.size))

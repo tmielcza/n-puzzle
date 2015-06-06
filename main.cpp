@@ -3,14 +3,15 @@
 #include "AStarSolver.hpp"
 #include "Parser.hpp"
 #include "HeuristicFactory.hpp"
+#include "Dijkstra.hpp"
 
-typedef enum {
+enum npuzzle_error_t {
 	ERR_TOOMANYARGS,
 	ERR_BADOPTS,
 	ERR_BADHEURISTIC,
 	ERR_NOTSOLVABLE,
 	ERR_BADMAP
-} npuzzle_error_t;
+};
 
 void error(npuzzle_error_t error, char **map)
 {
@@ -65,7 +66,7 @@ int main(int ac, char **av)
 		if (AStarSolver::isSolvable(map, size))
 		{
 			std::cout << "I m aliiiive" << std::endl;
-			while (a.solve());
+			while (a.solve()) ;
 			for (auto atom : a.buildPath())
 				atom->dump();
 			std::cout << "Count : " << a.buildPath().size() - 1 << std::endl;
