@@ -197,9 +197,10 @@ char	**AStarSolver::finalSolution(int size) {
 	int		total_size = size * size;
 	char	**snailMap;
 
-	for (int i = 0; i < size; i++)
+	newMap[0] = new char[size * size];
+	for (int i = 1; i < size; i++)
 	{
-		newMap[i] = new char[size];
+		newMap[i] = newMap[0] + size * i;
 		memset(newMap[i], 0, size);
 	}
 	snailMap = getSnailForm(newMap, size);
@@ -242,8 +243,9 @@ bool	AStarSolver::collide(const AStarSolver& a, const AStarSolver& b)
 {
 	auto	found = b._closelist.find(a._lastNode);
 
-	if (found != b._closelist.end() && (*found)->cost - 6 <= a._lastNode->heuristic)
+	if (found != b._closelist.end() )// && (*found)->cost - 6 <= a._lastNode->heuristic)
 	{
+		std::cout << "bite : " << (*found)->cost << " " << a._lastNode->heuristic << std::endl;
 		return (true);
 	}
 	return (false);

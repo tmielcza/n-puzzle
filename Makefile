@@ -12,7 +12,7 @@ SRC = main.cpp \
 	LinearConflictPlus.cpp
 
 OBJ = $(SRC:.cpp=.o)
-FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3 -march=native
+FLAGS = -Wall -Wextra -Werror -std=c++11 -g -O3 -march=native -pedantic-errors
 
 all: $(NAME)
 

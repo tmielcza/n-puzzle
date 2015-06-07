@@ -40,7 +40,7 @@ int		LinearConflictPlus::distance(const char * const *map) const {
       {
         if (*i > *j)
         {
-			cumul += 2 + (abs(*i - *j) - 1); // Plus rapide. Je sais pas si c'est admissible.
+			cumul += 2 + (abs(*i - *j) - 1);
         }
       }
     }
@@ -52,7 +52,7 @@ int		LinearConflictPlus::distance(const char * const *map) const {
       for (auto j = (++i)--; j != this->cols[k].end(); j++)
       {
         if (*i > *j)
-			cumul += 2 + (abs(*i - *j) - 1); // Plus rapide. Je sais pas si c'est admissible.
+			cumul += 2 + (abs(*i - *j) - 1);
       }
     }
   }

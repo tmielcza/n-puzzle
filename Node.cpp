@@ -79,15 +79,13 @@ void	Node::dump(void) const
 		for (size_t x = 0; x < this->size; x++)
 		{
 			if ((int)x == this->pos0.x && (int)y == this->pos0.y)
-				std::cout << "\e[38;5;163m" << (int)this->map[y][x] << "\033\[0m ";
+				std::cout << "\033[38;5;163m" << (int)this->map[y][x] << "\033\1330m ";
 			else
 				std::cout << (int)this->map[y][x] << " ";
 		}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-	std::cout << "f(x): " << this->distance << std::endl;
-	std::cout << "h(x): " << this->heuristic << std::endl;
 }
 
 char*	Node::square(const Square& s) const {
