@@ -25,7 +25,7 @@ IHeuristic *HeuristicFactory::createHeuristic(std::string name, char **finalMap,
 		ret = new LinearConflict(finalMap, size);
 	else if (name == "misplacedtiles")
 		ret = new MisplacedTiles(finalMap, size);
-	else if (name == "one")
+	else if (name == "zero")
 		ret = new Dijkstra();
 	else if (name == "linearconflictplus")
 		ret = new LinearConflictPlus(finalMap, size);

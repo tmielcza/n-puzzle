@@ -114,7 +114,7 @@ bool	AStarSolver::solve(void)
 
 	this->_openlist.pop();
 	this->_lastNode = topNode;
-	if (topNode->heuristic == 0)
+	if (topNode->heuristic == 0 && *topNode == this->_finalNode)
 	{
 		this->_closelist.insert(topNode);
 		return (false);

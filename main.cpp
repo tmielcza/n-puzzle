@@ -32,6 +32,21 @@ void error(npuzzle_error_t error, char **map)
 	std::exit(EXIT_FAILURE);
 }
 
+void	displayMap(char **map, size_t size) {
+	for (size_t y = 0; y < size; y++)
+	{
+		for (size_t x = 0; x < size; x++)
+		{
+			if (map[y][x] == 0)
+				std::cout << "\033[38;5;163m" << (int)map[y][x] << "\033\1330m ";
+			else
+				std::cout << (int)map[y][x] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
 void	runSolver(char **map, std::string heuristicName, int size, bool bidir) {
 	AStarSolver				*a;
 	IHeuristic				*ha;
@@ -95,6 +110,8 @@ int main(int ac, char **av)
 			size = b.getSize();
 		if (b.getOptionBi() == true)
 			std::cout << "kikoo" << std::endl;
+		displayMap(map, size);
+		std::cout << "--------------------------------" << std::endl;
 		runSolver(map, b.getOptionH(), size, b.getOptionBi());
 	}
 	else
