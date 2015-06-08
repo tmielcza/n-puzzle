@@ -42,12 +42,12 @@ void	runSolver(char **map, std::string heuristicName, int size, bool bidir) {
 
 	finalMap = AStarSolver::finalSolution(size);
 	ha = HeuristicFactory::getInstance().createHeuristic(heuristicName, finalMap, size);
-	a = new AStarSolver(map, finalMap, size, *ha);
-	if (!AStarSolver::isSolvable(map, size)) {
-		error(ERR_NOTSOLVABLE, map);
-	} else if (ha == NULL) {
+	if (ha == NULL)
 		error(ERR_BADHEURISTIC, map);
-	} else if (!bidir) {
+	a = new AStarSolver(map, finalMap, size, *ha);
+	if (!AStarSolver::isSolvable(map, size))
+		error(ERR_NOTSOLVABLE, map);
+	else if (!bidir) {
 		while (a->solve()) ;
 		path = a->buildPath();
 		totalStates = a->getTotalStates();

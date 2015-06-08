@@ -20,7 +20,6 @@ bool Parser::get_options(int ac, char **av)
     return true;
   for (int i = 1; i != ac; i++)
   {
-//    std::cout << "av[i] = " << av[i] << std::endl;
     if (strcmp(av[i], "-b") == 0)
       b += 1;
     else if (strcmp(av[i], "-h") == 0)
@@ -33,7 +32,6 @@ bool Parser::get_options(int ac, char **av)
     }
     else if (strcmp(av[i], "-s") == 0)
     {
-  //    std::cout << "av[i++] = " << av[i + 1] << std::endl;
       if (av[i + 1] == NULL)
         return false;
       i++;
@@ -45,7 +43,6 @@ bool Parser::get_options(int ac, char **av)
         k++;
       }
       size = av[i];
-  //    std::cout << "it's here" << std::endl;
       if (atoi(size.c_str()) > 17 && atoi(size.c_str()) < 3)
         return false;
       s += 1;
@@ -60,7 +57,6 @@ bool Parser::get_options(int ac, char **av)
       f += 1;
     }
   }
-//  std::cout << "au revoir" << std::endl;
   if (s > 1 || b > 1 || h > 1 || f > 1)
     return false;
   if (f == 1 && s >= 1)
@@ -241,7 +237,7 @@ char **Parser::get_map(char *map)
   std::sort(str, str+(size*size));
   for (int i = 0; i < (size * size); i++)
   {
-   if (str[i] != i)
+   if ((int)str[i] != i)
    {
      remove(map_file);
      delete str;
