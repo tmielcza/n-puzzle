@@ -48,6 +48,37 @@ void	displayMap(unsigned short **map, size_t size) {
 	std::cout << std::endl;
 }
 
+void	retracePath(std::list<const Node*> &path, size_t size, std::string name, size_t beginid, size_t endid) {
+	AStarSolver			*ass;
+	HeuristicFactory&	heurfactory = HeuristicFactory::getInstance();
+	auto				begin = path.begin();
+	auto				end = path.end();
+
+	for (size_t i = 0; i < beginid; i++) {
+		begin++;
+	}
+	for (size_t i = 0; i < endid; i++) {
+		end--;
+	}
+	ass = new AStarSolver((*begin)->map, (*end)->map, size,
+						  *heurfactory.createHeuristic(name, (*end)->map, size));
+	while (ass->solve()) ;
+	auto	newList = ass->buildPath();
+	begin = path.erase(begin, end)--;
+	path.insert(begin, newList.begin(), --newList.end());
+}
+
+void	refinePath(std::list<const Node*> &path, size_t size, std::string name) {
+	size_t		half_list = path.size() / 2;
+	size_t		quarter_list = half_list / 2 / 2;
+	if (quarter_list < 2) {
+		return ;
+	}
+	retracePath(path, size, name, quarter_list, quarter_list);
+	retracePath(path, size, name, 0, half_list);
+	retracePath(path, size, name, half_list, 1);
+}
+
 void	runSolver(unsigned short **map, std::string heuristicName, int size, bool bidir) {
 	AStarSolver				*a;
 	IHeuristic				*ha;
@@ -76,6 +107,7 @@ void	runSolver(unsigned short **map, std::string heuristicName, int size, bool b
 		b = new AStarSolver(finalMap, map, size, *hb);
 		while (a->solve() && b->solve() && !AStarSolver::collide(*a, *b) && !AStarSolver::collide(*b, *a)) ;
 		path = AStarSolver::buildMultiPath(*a, *b);
+		refinePath(path, size, "linearconflict");
 		totalStates = a->getTotalStates() + b->getTotalStates();
 		maxStates = a->getMaxStates() + b->getMaxStates();
 	}

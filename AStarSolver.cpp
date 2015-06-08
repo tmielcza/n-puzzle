@@ -247,7 +247,6 @@ bool	AStarSolver::collide(const AStarSolver& a, const AStarSolver& b)
 
 	if (found != b._closelist.end() )// && (*found)->cost - 6 <= a._lastNode->heuristic)
 	{
-		std::cout << "bite : " << (*found)->cost << " " << a._lastNode->heuristic << std::endl;
 		return (true);
 	}
 	return (false);
