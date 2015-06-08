@@ -20,7 +20,7 @@ class AStarSolver {
 public:
 
 	AStarSolver();
-	AStarSolver(unsigned short **map, unsigned short **finalMap, int size, IHeuristic& heuristic);
+	AStarSolver(char **map, char **finalMap, int size, IHeuristic& heuristic);
 	AStarSolver(AStarSolver const &src);
 	~AStarSolver();
 
@@ -31,10 +31,10 @@ public:
 	size_t				getTotalStates();
 	size_t				getMaxStates();
 
-	static unsigned short			**genMap(size_t size, size_t swaps);
-	static unsigned short			**finalSolution(int size);
-	static bool			isSolvable(unsigned short **map, int size);
-	static unsigned short			**getSnailForm(unsigned short **map, int size);
+	static char			**genMap(size_t size, size_t swaps);
+	static char			**finalSolution(int size);
+	static bool			isSolvable(char **map, int size);
+	static char			**getSnailForm(char **map, int size);
 
 	static constNodes	buildMultiPath(const AStarSolver& a, const AStarSolver& b);
 

@@ -16,8 +16,8 @@ void	NodePool::allocateNodes(size_t number)
 	size_t	size = this->size;
 	size_t	size2 = size * size;
 	Node*	nodes = new Node[number];
-	unsigned short**	pmaps = new unsigned short*[size * number];
-	unsigned short*	maps = new unsigned short[size * size * number];
+	char**	pmaps = new char*[size * number];
+	char*	maps = new char[size * size * number];
 
 	for (size_t i = 0; i < number; i++)
 	{

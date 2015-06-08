@@ -1,6 +1,7 @@
 #ifndef PARSER_HPP
 # define PARSER_HPP
 
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -16,16 +17,17 @@ public:
 
   Parser &operator=(Parser const &rhs);
   bool parsing(std::string line);
-  unsigned short **get_map(char *map);
+  char **get_map(char *map);
   int getSize(void);
-  char *convert(unsigned short **map);
+  char *convert(char **map);
   bool get_options(int ac, char **av);
   std::string getOptionH(void);
   int getOptionSize();
   bool getOptionBi();
 
+
 private:
-  void remove(unsigned short **map);
+  void remove(char **map);
   int size;
   bool justGetSize;
   std::string stockSize;
@@ -35,6 +37,8 @@ private:
   std::string optionH;
   bool optionBi;
   int optionSize;
+
+
 };
 
 #endif

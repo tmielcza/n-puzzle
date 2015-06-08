@@ -4,6 +4,7 @@ Parser::Parser() : size(0), justGetSize(false), numberLine(0), optionH(""), opti
 
 Parser::~Parser() {}
 
+
 bool Parser::get_options(int ac, char **av)
 {
   int s = 0;
@@ -84,13 +85,13 @@ bool Parser::getOptionBi()
   return this->optionBi;
 }
 
-void Parser::remove(unsigned short **map)
+void Parser::remove(char **map)
 {
 	delete [] map[0];
 	delete [] map;
 }
 
-char *Parser::convert(unsigned short **map)
+char *Parser::convert(char **map)
 {
   int k = 0;
   char *str = new char[this->size * this->size];
@@ -169,19 +170,19 @@ bool Parser::parsing(std::string line)
   return true;
 }
 
-unsigned short **Parser::get_map(char *map)
+char **Parser::get_map(char *map)
 {
   std::ifstream file;
   std::string line;
-  unsigned short **map_file;
+  char **map_file;
   int number = 0;
   char *str;
 
   file.open(map);
   if (file.fail())
   {
-    map_file = new unsigned short*[1];
-    map_file[0] = new unsigned short[1];
+    map_file = new char*[1];
+    map_file[0] = new char[1];
     map_file[0][0] = 'O';
     return map_file;
   }
@@ -196,8 +197,8 @@ unsigned short **Parser::get_map(char *map)
     }
     else if (this->justGetSize) // creation map
     {
-      map_file = new unsigned short*[this->size];
-	  map_file[0] = new unsigned short[this->size * this->size];
+      map_file = new char*[this->size];
+	  map_file[0] = new char[this->size * this->size];
       for (int i = 1; i < this->size; i++)
         map_file[i] = map_file[0] + this->size * i;
       this->justGetSize = false;

@@ -1,14 +1,14 @@
 # include "LinearConflict.hpp"
 # include <unistd.h>
 
-LinearConflict::LinearConflict(unsigned short **final_map, size_t size) : Manhattan(final_map, size) {
-  this->rows = new std::list<unsigned short>[this->size];
-  this->cols = new std::list<unsigned short>[this->size];
+LinearConflict::LinearConflict(char **final_map, size_t size) : Manhattan(final_map, size) {
+  this->rows = new std::list<char>[this->size];
+  this->cols = new std::list<char>[this->size];
 }
 
 LinearConflict::~LinearConflict() {}
 
-int		LinearConflict::distance(const unsigned short * const *map) const {
+int		LinearConflict::distance(const char * const *map) const {
 
 	int cumul = Manhattan::distance(map);
 

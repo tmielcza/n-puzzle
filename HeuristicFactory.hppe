@@ -8,7 +8,7 @@ class HeuristicFactory {
 
 public:
 	static HeuristicFactory &getInstance();
-	IHeuristic *createHeuristic(std::string name, unsigned short **finaleMap, size_t size);
+	IHeuristic *createHeuristic(std::string name, char **finaleMap, size_t size);
 
 private:
 	HeuristicFactory();

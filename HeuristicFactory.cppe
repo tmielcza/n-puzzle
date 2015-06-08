@@ -15,7 +15,7 @@ HeuristicFactory &HeuristicFactory::getInstance() {
 	return HeuristicFactory::_instance;
 }
 
-IHeuristic *HeuristicFactory::createHeuristic(std::string name, unsigned short **finalMap, size_t size)
+IHeuristic *HeuristicFactory::createHeuristic(std::string name, char **finalMap, size_t size)
 {
 	IHeuristic *ret = NULL;
 

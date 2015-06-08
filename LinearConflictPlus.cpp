@@ -1,9 +1,9 @@
 # include "LinearConflictPlus.hpp"
 # include <unistd.h>
 
-LinearConflictPlus::LinearConflictPlus(char **final_map, size_t size) : Manhattan(final_map, size) {
-  this->rows = new std::vector<char>[this->size];
-  this->cols = new std::vector<char>[this->size];
+LinearConflictPlus::LinearConflictPlus(unsigned short **final_map, size_t size) : Manhattan(final_map, size) {
+  this->rows = new std::vector<unsigned short>[this->size];
+  this->cols = new std::vector<unsigned short>[this->size];
   for (size_t i = 0; i < size; i++)
   {
 	  this->rows[i].reserve(size);
@@ -13,7 +13,7 @@ LinearConflictPlus::LinearConflictPlus(char **final_map, size_t size) : Manhatta
 
 LinearConflictPlus::~LinearConflictPlus() {}
 
-int		LinearConflictPlus::distance(const char * const *map) const {
+int		LinearConflictPlus::distance(const unsigned short * const *map) const {
 
 	int cumul = Manhattan::distance(map);
 

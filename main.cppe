@@ -13,7 +13,7 @@ enum npuzzle_error_t {
 	ERR_BADMAP
 };
 
-void error(npuzzle_error_t error, unsigned short **map)
+void error(npuzzle_error_t error, char **map)
 {
 	if (error == ERR_TOOMANYARGS)
 		std::cout << "Too many args" << std::endl;
@@ -33,7 +33,7 @@ void error(npuzzle_error_t error, unsigned short **map)
 	std::exit(EXIT_FAILURE);
 }
 
-void	displayMap(unsigned short **map, size_t size) {
+void	displayMap(char **map, size_t size) {
 	for (size_t y = 0; y < size; y++)
 	{
 		for (size_t x = 0; x < size; x++)
@@ -48,10 +48,10 @@ void	displayMap(unsigned short **map, size_t size) {
 	std::cout << std::endl;
 }
 
-void	runSolver(unsigned short **map, std::string heuristicName, int size, bool bidir) {
+void	runSolver(char **map, std::string heuristicName, int size, bool bidir) {
 	AStarSolver				*a;
 	IHeuristic				*ha;
-	unsigned short					**finalMap;
+	char					**finalMap;
 	std::list<const Node*>	path;
 	size_t					totalStates;
 	size_t					maxStates;
@@ -89,7 +89,7 @@ void	runSolver(unsigned short **map, std::string heuristicName, int size, bool b
 int main(int ac, char **av)
 {
 	int size = 0;
-	unsigned short **map = NULL;
+	char **map = NULL;
 	std::string heuristic;
 	Parser b;
 

@@ -9,16 +9,16 @@ class LinearConflict : public Manhattan {
 
 public:
   LinearConflict();
-  LinearConflict(unsigned short **finalMap, size_t size);
+  LinearConflict(char **finalMap, size_t size);
   LinearConflict(LinearConflict const &src);
   ~LinearConflict();
 
   LinearConflict  &operator=(LinearConflict const &rhs);
-  virtual int		distance(const unsigned short * const *map) const;
+  virtual int		distance(const char * const *map) const;
 
 private:
-  std::list<unsigned short> *rows;
-  std::list<unsigned short> *cols;
+  std::list<char> *rows;
+  std::list<char> *cols;
 };
 
 #endif // LINEARCONFLICT_HPP

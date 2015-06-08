@@ -45,3 +45,6 @@ OK
 ./npuzzle basic_map.txt -h misplacedtiles
 ./npuzzle basic_map.txt -h linearconflictplus
 ./npuzzle basic_map.txt -h one -b
+
+A TESTER :
+Fichier vide, sans permissions, et caetera

@@ -7,7 +7,7 @@
 
 AStarSolver::~AStarSolver() {}
 
-AStarSolver::AStarSolver(unsigned short **map, unsigned short **finalMap, int size, IHeuristic& heuristic)
+AStarSolver::AStarSolver(char **map, char **finalMap, int size, IHeuristic& heuristic)
 	: _size(size), _pool(size), _openlist(&AStarSolver::less_node),
 	  _closelist(100, &AStarSolver::hash_node, &AStarSolver::eq_node),
 	  _firstNode(map, size),
@@ -140,8 +140,8 @@ bool	AStarSolver::solve(void)
 	return true;
 }
 
-unsigned short	**AStarSolver::getSnailForm(unsigned short **map, int size) {
-	unsigned short **newMap = new unsigned short*[size * size];
+char	**AStarSolver::getSnailForm(char **map, int size) {
+	char **newMap = new char*[size * size];
 	int total_size = size * size;
 	int x = 0;
 	int y = 0;
@@ -176,8 +176,8 @@ unsigned short	**AStarSolver::getSnailForm(unsigned short **map, int size) {
 	return (newMap);
 }
 
-bool	AStarSolver::isSolvable(unsigned short **map, int size) {
-	unsigned short	**newMap = getSnailForm(map, size);
+bool	AStarSolver::isSolvable(char **map, int size) {
+	char	**newMap = getSnailForm(map, size);
 	int		total_size = size * size;
 	int		count = 0;
 
@@ -192,12 +192,12 @@ bool	AStarSolver::isSolvable(unsigned short **map, int size) {
 	return (count % 2 == 0);
 }
 
-unsigned short	**AStarSolver::finalSolution(int size) {
-	unsigned short	**newMap = new unsigned short*[size];
+char	**AStarSolver::finalSolution(int size) {
+	char	**newMap = new char*[size];
 	int		total_size = size * size;
-	unsigned short	**snailMap;
+	char	**snailMap;
 
-	newMap[0] = new unsigned short[size * size];
+	newMap[0] = new char[size * size];
 	for (int i = 1; i < size; i++)
 	{
 		newMap[i] = newMap[0] + size * i;
@@ -211,14 +211,13 @@ unsigned short	**AStarSolver::finalSolution(int size) {
 	return (newMap);
 }
 
-unsigned short	**AStarSolver::genMap(size_t size, size_t swaps)
+char	**AStarSolver::genMap(size_t size, size_t swaps)
 {
-	int signedSize = size;
-	unsigned short	**map = finalSolution(size);
-	short			offsets[4][2] = {
+	char	**map = finalSolution(size);
+	char	offsets[4][2] = {
 		{1, 0}, {0, 1}, {-1, 0}, {0, -1}
 	};
-	short	pos0[2] = {(short)(signedSize / 2), (short)(size / 2 - (size % 2 == 0 ? 1 : 0))};
+	char	pos0[2] = {(char)(size / 2), (char)(size / 2 - (size % 2 == 0 ? 1 : 0))};
 
 	if (swaps == 0)
 	{
@@ -227,14 +226,13 @@ unsigned short	**AStarSolver::genMap(size_t size, size_t swaps)
 	while (swaps > 0)
 	{
 		int		off = arc4random() % 4;
-		short	swapPosX = pos0[0] + offsets[off][0];
-		short	swapPosY = pos0[1] + offsets[off][1];
-		if (swapPosX >= 0 && swapPosX < signedSize && swapPosY >= 0 && swapPosY < signedSize)
+		char	swapPos[2] = {(char)(pos0[0] + offsets[off][0]), char(pos0[1] + offsets[off][1])};
+		if (swapPos[0] >= 0 && swapPos[0] < (int)size && swapPos[1] >= 0 && swapPos[1] < (int)size)
 		{
-			map[pos0[0]][pos0[1]] = map[swapPosX][swapPosY];
-			map[swapPosX][swapPosY] = 0;
-			pos0[0] = swapPosX;
-			pos0[1] = swapPosY;
+			map[(int)pos0[0]][(int)pos0[1]] = map[(int)swapPos[0]][(int)swapPos[1]];
+			map[(int)swapPos[0]][(int)swapPos[1]] = 0;
+			pos0[0] = swapPos[0];
+			pos0[1] = swapPos[1];
 		}
 		swaps--;
 	}

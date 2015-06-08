@@ -15,18 +15,18 @@ struct Node
 	Node();
 	Node(size_t size);
 	Node(const Node& src);
-	Node(const unsigned short * const * map, int size);
-	Node(const unsigned short * const * map, int size, int cost, int heuristic, unsigned short pos0[2], Node *parent);
+	Node(const char * const * map, int size);
+	Node(const char * const * map, int size, int cost, int heuristic, char pos0[2], Node *parent);
 	~Node();
-	void	setMap(const unsigned short * const * map);
-	Square	find0(const unsigned short * const * map, size_t size);
+	void	setMap(const char * const * map);
+	Square	find0(const char * const * map, size_t size);
 	void	dump(void) const;
-	unsigned short*	square(const Square& s) const;
+	char*	square(const Square& s) const;
 	void	hash(void);
 
 	Node&	operator=(const Node& rhs);
 
-	unsigned short	**map;
+	char	**map;
 	size_t	size;
 	int		cost;
 	int		heuristic;

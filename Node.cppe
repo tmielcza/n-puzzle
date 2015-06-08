@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "Node.hpp"
 
-void	Node::setMap(const unsigned short * const * map) {
+void	Node::setMap(const char * const * map) {
 	std::copy(map[0], map[0] + this->size * this->size, this->map[0]);
 }
 
@@ -13,13 +13,13 @@ Node::~Node(void) {}
 
 
 Node::Node(size_t size) : size(size) {
-	this->map = new unsigned short*[size];
-	this->map[0] = new unsigned short[size * size];
+	this->map = new char*[size];
+	this->map[0] = new char[size * size];
 	for (size_t i = 1; i < size; i++)
 		this->map[i] = this->map[0] + size * i;
 }
 
-Node::Node(const unsigned short * const * map, int size)
+Node::Node(const char * const * map, int size)
 	: Node(size)
 {
 	this->setMap(map);
@@ -33,7 +33,7 @@ Node::Node(const unsigned short * const * map, int size)
 	this->parent = NULL;
 }
 
-Node::Node(const unsigned short * const * map, int size, int cost, int heuristic, unsigned short pos0[2], Node *parent)
+Node::Node(const char * const * map, int size, int cost, int heuristic, char pos0[2], Node *parent)
 	: size(size),
 	  cost(cost),
 	  heuristic(heuristic),
@@ -41,10 +41,10 @@ Node::Node(const unsigned short * const * map, int size, int cost, int heuristic
 	  pos0 {pos0[0], pos0[1]}
 {
 	this->distance = cost + heuristic;
-	this->map = new unsigned short*[this->size];
+	this->map = new char*[this->size];
 	for (size_t i = 0; i < this->size; i++)
 	{
-		this->map[i] = new unsigned short[this->size];
+		this->map[i] = new char[this->size];
 	}
 	this->setMap(map);
 	this->hash();
@@ -54,7 +54,7 @@ Node::Node(const Node& src) : Node(src.size) {
 	*this = src;
 }
 
-Node::Square	Node::find0(const unsigned short * const * map, size_t size) {
+Node::Square	Node::find0(const char * const * map, size_t size) {
 	Square pos0;
 
 	for (unsigned int x = 0; x < size; x++)
@@ -88,7 +88,7 @@ void	Node::dump(void) const
 	std::cout << std::endl;
 }
 
-unsigned short*	Node::square(const Square& s) const {
+char*	Node::square(const Square& s) const {
 	return (&this->map[s.y][s.x]);
 }
 
