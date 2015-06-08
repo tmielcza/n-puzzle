@@ -14,7 +14,6 @@ bool Parser::get_options(int ac, char **av)
   std::ifstream file;
   std::string name_h;
 
-//  std::cout << "bonjour" << std::endl;
   if (ac == 1)
     return true;
   for (int i = 1; i != ac; i++)
@@ -190,14 +189,16 @@ unsigned short **Parser::get_map(char *map)
     getline(file, line);
     if (!parsing(line)) // ERROR
     {
-      if (this->size != 0)
+      if (this->size != 0 && this->numberLine != 0)
         remove(map_file);
       return NULL;
     }
     else if (this->justGetSize) // creation map
     {
+      if (this->size < 3 || this->size > 17)
+        return NULL;
       map_file = new unsigned short*[this->size];
-	  map_file[0] = new unsigned short[this->size * this->size];
+	    map_file[0] = new unsigned short[this->size * this->size];
       for (int i = 1; i < this->size; i++)
         map_file[i] = map_file[0] + this->size * i;
       this->justGetSize = false;
@@ -219,7 +220,11 @@ unsigned short **Parser::get_map(char *map)
           {
             count++;
             if (count > this->size)
+            {
+              if (this->size != 0)
+                remove(map_file);
               return NULL;
+            }
             std::stringstream(this->stockNumber) >> number;
             map_file[this->numberLine][index] = number;
             this->stockNumber = "";
@@ -230,7 +235,7 @@ unsigned short **Parser::get_map(char *map)
       }
     }
   }
-  if ((this->numberLine - 1) != this->size)
+  if (((this->numberLine - 1) != this->size) || this->size == 0)
     return NULL;
   str = convert(map_file);
   std::sort(str, str+(size*size));

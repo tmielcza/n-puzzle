@@ -136,13 +136,10 @@ int main(int ac, char **av)
 			size = b.getOptionSize();
 		else
 			error(ERR_BADOPTS, map);
-		heuristic =  b.getOptionH();
 		if (map[0][0] == 'O')
 			map = AStarSolver::genMap(size, 0);
 		else
 			size = b.getSize();
-		if (b.getOptionBi() == true)
-			std::cout << "kikoo" << std::endl;
 		displayMap(map, size);
 		std::cout << "--------------------------------" << std::endl;
 		runSolver(map, b.getOptionH(), size, b.getOptionBi());
