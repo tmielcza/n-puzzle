@@ -24,7 +24,7 @@ ERROR
 
 ./npuzzle -s 2
 ./npuzzle -foror
-./npuzzle -h false // SEGFAULT => regle
+./npuzzle -h false
 ./npuzzle -b -h manhattan -s 5 map.txt kikoo
 ./npuzzle -s 18
 ./npuzzle -s
@@ -34,17 +34,18 @@ ERROR
 ./npuzzle map.txt basic_map.txt
 ./npuzzle noexist
 ./npuzzle basic_map.txt -h manhattan -s 4
+./npuzzle <ficher vide>
+./npuzzle <fichier sans permission>
 
 
 OK
+
 ./npuzzle -s 4
 ./npuzzle -s 17
 ./npuzzle basic_map.txt -h manhattan
 ./npuzzle basic_map.txt -h linearconflict
-./npuzzle basic_map.txt -h one
+./npuzzle basic_map.txt -h zero
 ./npuzzle basic_map.txt -h misplacedtiles
 ./npuzzle basic_map.txt -h linearconflictplus
-./npuzzle basic_map.txt -h one -b
-
-A TESTER :
-Fichier vide, sans permissions, et caetera
+./npuzzle basic_map.txt -h zero -b
+./npuzzle -b
