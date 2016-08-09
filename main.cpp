@@ -18,9 +18,10 @@ void error(npuzzle_error_t error, unsigned short **map)
 	if (error == ERR_TOOMANYARGS)
 		std::cout << "Too many args" << std::endl;
 	else if (error == ERR_BADOPTS)
-		std::cout << "Bad options" << std::endl;
+		std::cout << "Usage: ./npuzzle [file] -s <size> -b -h <heuristic>" << std::endl;
 	else if (error == ERR_BADHEURISTIC)
-		std::cout << "Heuristic doesn't exist" << std::endl;
+		std::cout << "Heuristics: zero" ", manhattan" ", misplacedtiles"
+				  ", linearconflict" ", linearconflictplus" << std::endl;
 	else if (error == ERR_NOTSOLVABLE)
 		std::cout << "Not solvable" << std::endl;
 	else if (error == ERR_BADMAP)
